@@ -94,6 +94,64 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  /// Header row: avatar + greeting/name.
+  ///
+  /// Renders directly on the page background (no AppBar / Container behind
+  /// it) so it blends with the rest of the Home screen in both light and
+  /// dark mode.
+  Widget _buildHeader(ThemeData theme) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        CircleAvatar(
+          radius: 28.r,
+          backgroundColor: kGrey.shade300,
+          backgroundImage: savedMemoryImage != null
+              ? MemoryImage(savedMemoryImage!)
+              : localImage != null
+              ? FileImage(localImage!)
+              : savedImageUrl != null
+              ? NetworkImage(savedImageUrl!)
+              : null,
+          child:
+              (localImage == null &&
+                  savedMemoryImage == null &&
+                  savedImageUrl == null)
+              ? Icon(Icons.person, size: 30.r)
+              : null,
+        ),
+        SizedBox(width: 14.w),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "home_greeting".tr(),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14.sp,
+                  color: kOrange,
+                ),
+              ),
+              SizedBox(height: 2.h),
+              Text(
+                userName ?? "",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20.sp,
+                  color: kBackgroundColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -102,61 +160,14 @@ class _HomeScreenState extends State<HomeScreen> {
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
-          appBar:  AppBar(
-            title: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                  radius: 25.r,
-                  backgroundColor: kGrey.shade300,
-                  backgroundImage: savedMemoryImage != null
-                      ? MemoryImage(savedMemoryImage!)
-                      : localImage != null
-                      ? FileImage(localImage!)
-                      : savedImageUrl != null
-                      ? NetworkImage(savedImageUrl!)
-                      : null,
-                  child:
-                      (localImage == null &&
-                          savedMemoryImage == null &&
-                          savedImageUrl == null)
-                      ? Icon(Icons.person, size: 35.r)
-                      : null,
-                ),
-        Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-        Text(
-          "Welcome ,",
-          style: theme.textTheme.bodyLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            fontSize: 20.sp,    
-            color: kOrange, 
-          ),
-        ),
-        Text(
-          userName ?? "",
-          style: theme.textTheme.bodyLarge?.copyWith(
-            fontWeight: FontWeight.w700,
-            fontSize:18.sp,    
-            color: kBackgroundColor,
-          ),
-        ),
-            ],
-          ),
-        )
-              ],
-            ),
-          ),
-        
           body: SingleChildScrollView(
             padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 25.h),
+                SizedBox(height: 10.h),
+                _buildHeader(theme),
+                SizedBox(height: 24.h),
                 SearchField(),
                 SizedBox(height: 20.h),
                 LayoutBuilder(

@@ -7,6 +7,7 @@ import 'package:travel_hub/constant.dart';
 import 'package:travel_hub/core/utils/app_router.dart';
 import 'package:travel_hub/navigation/hotels/models/hotels_model.dart';
 import 'package:travel_hub/navigation/hotels/presentation/widgets/custom_button.dart';
+import 'package:travel_hub/navigation/hotels/presentation/widgets/hotel_list.dart';
 
 class HotelsScreenDetails extends StatelessWidget {
   final Hotels hotels;
@@ -46,50 +47,21 @@ class HotelsScreenDetails extends StatelessWidget {
               padding: EdgeInsets.all(12.r),
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            hotels.name,
-                            style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color, fontSize: 16.sp),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.only(start: 122.r),
-                          child: Text(
-                            "${hotels.reviewsCount}",
-                            style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color, fontSize: 16.sp),
-                          ),
-                        ),
-                      ),
-                    ],
+                  HotelInfoRow(
+                    leftText: hotels.name,
+                    rightText: "${hotels.reviewsCount}",
+                    leftColor: Theme.of(context).textTheme.bodyLarge?.color ?? kBlack,
+                    rightColor: Theme.of(context).textTheme.bodyMedium?.color ?? kBlack,
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.only(end: 100.r),
-                          child: Text(
-                            hotels.city,
-                            style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color, fontSize: 14.sp),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.only(start: 100.r),
-                          child: Text(
-                            "reviews".tr(),
-                            style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color, fontSize: 14.sp),
-                          ),
-                        ),
-                      ),
-                    ],
+                  SizedBox(height: 4.h),
+                  HotelInfoRow(
+                    leftText: hotels.city,
+                    rightText: "reviews".tr(),
+                    leftColor: Theme.of(context).textTheme.bodyMedium?.color ?? kBlack,
+                    rightColor: Theme.of(context).textTheme.bodyMedium?.color ?? kBlack,
+                    fontSize: 14.sp,
                   ),
+                  SizedBox(height: 8.h),
                   Row(
                     children: [
                       Icon(Icons.star_rate, color: kStar),
@@ -180,7 +152,7 @@ class HotelsScreenDetails extends StatelessWidget {
                         Expanded(
                           child: Center(
                             child: Text(
-                              "${hotels.pricePerNight} EGP",
+                              "${hotels.pricePerNight} ${"EGP".tr()}",
                               style: TextStyle(color: kWhite, fontSize: 16.sp),
                             ),
                           ),

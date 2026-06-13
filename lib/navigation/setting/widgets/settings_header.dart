@@ -143,7 +143,7 @@ class _SettingsHeaderState extends State<SettingsHeader> {
           child: Row(
             children: [
               Stack(
-                alignment: Alignment.bottomRight,
+                alignment: AlignmentDirectional.bottomEnd,
                 children: [
                   CircleAvatar(
                     radius: 35.r,

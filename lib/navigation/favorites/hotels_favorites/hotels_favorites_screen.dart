@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,44 +7,38 @@ import 'package:travel_hub/navigation/favorites/hotels_favorites/data/cubit/hote
 import 'package:travel_hub/navigation/hotels/presentation/widgets/hotel_list.dart';
 
 class FavoritesScreen extends StatelessWidget {
+  const FavoritesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Favorite Hotels"),
+        title: Text('favorite_hotels'.tr()),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.delete_forever),
-            onPressed: () {
-              context.read<FavoritesCubit>().clearFavorites();
-            },
-          )
+            icon: const Icon(Icons.delete_forever),
+            onPressed: () => context.read<FavoritesCubit>().clearFavorites(),
+          ),
         ],
       ),
-
       body: BlocBuilder<FavoritesCubit, FavoritesState>(
         builder: (context, state) {
           if (state is FavoritesLoading) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
-
           if (state is FavoritesLoaded) {
             if (state.favorites.isEmpty) {
-              return Center(child: Text("No favorites yet"));
+              return Center(child: Text('no_favorites_yet'.tr()));
             }
-
             return ListView.builder(
               padding: EdgeInsetsDirectional.all(16.r),
               itemCount: state.favorites.length,
-              itemBuilder: (context, index) {
-                final hotel = state.favorites[index];
-                return HotelCard(hotel: hotel);
-              },
+              itemBuilder: (context, index) =>
+                  HotelCard(hotel: state.favorites[index]),
             );
           }
-
-          return SizedBox();
+          return const SizedBox.shrink();
         },
       ),
     );

@@ -97,14 +97,14 @@ class HotelCard extends StatelessWidget {
               padding: EdgeInsetsDirectional.all(12.r),
               child: Column(
                 children: [
-                  _HotelInfoRow(
+                  HotelInfoRow(
                     leftText: hotel.name,
-                    rightText: "${hotel.pricePerNight} EGP",
+                    rightText: "${hotel.pricePerNight} ${"EGP".tr()}",
                     leftColor: theme.textTheme.bodyMedium?.color ?? kBlack,
                     rightColor: theme.colorScheme.primary,
                   ),
                   SizedBox(height: 4.h),
-                  _HotelInfoRow(
+                  HotelInfoRow(
                     leftText: hotel.city,
                     rightText: "per night".tr(),
                     leftColor: theme.textTheme.bodyMedium?.color?.withOpacity(0.7) ?? kAssets,
@@ -136,7 +136,13 @@ class _HotelImage extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return Stack(
-      alignment: Alignment.topRight,
+      // AlignmentDirectional.topEnd (not Alignment.topRight): the favorite
+      // heart button in the parent Stack sits at the default
+      // AlignmentDirectional.topStart, which becomes top-RIGHT in RTL. Using
+      // a physical `Alignment.topRight` here would put the rating badge on
+      // top of that heart button in Arabic. `topEnd` keeps the badge on the
+      // opposite corner from the heart in both directions.
+      alignment: AlignmentDirectional.topEnd,
       children: [
         ClipRRect(
           borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
@@ -180,38 +186,62 @@ class _HotelImage extends StatelessWidget {
   }
 }
 
-class _HotelInfoRow extends StatelessWidget {
+/// A row showing two pieces of hotel info side by side - e.g. hotel name +
+/// price, or city + "per night". Used by [HotelCard] (in the hotel list and
+/// favorites list) and reused by the hotel details screen for the
+/// name/reviews and city/"reviews" rows.
+///
+/// [leftText] hugs the row's leading edge and [rightText] hugs the trailing
+/// edge, using [AlignmentDirectional] so the layout mirrors correctly for
+/// RTL locales (Arabic) instead of staying pinned to the physical
+/// left/right. Both texts are constrained to a single line with an ellipsis
+/// so long hotel names (in either language) never clip into or overlap the
+/// other side of the row.
+class HotelInfoRow extends StatelessWidget {
   final String leftText;
   final String rightText;
   final Color leftColor;
   final Color rightColor;
+  final double? fontSize;
 
-  const _HotelInfoRow({
+  const HotelInfoRow({
+    super.key,
     required this.leftText,
     required this.rightText,
     required this.leftColor,
     required this.rightColor,
+    this.fontSize,
   });
 
   @override
   Widget build(BuildContext context) {
+    final size = fontSize ?? 16.sp;
     return Row(
       children: [
         Expanded(
           child: Align(
-            alignment: Alignment.centerLeft,
+            alignment: AlignmentDirectional.centerStart,
             child: Text(
               leftText,
-              style: TextStyle(color: leftColor, fontSize: 16.sp),
+              maxLines: 1,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.start,
+              style: TextStyle(color: leftColor, fontSize: size),
             ),
           ),
         ),
+        SizedBox(width: 8.w),
         Expanded(
           child: Align(
-            alignment: Alignment.centerRight,
+            alignment: AlignmentDirectional.centerEnd,
             child: Text(
               rightText,
-              style: TextStyle(color: rightColor, fontSize: 16.sp),
+              maxLines: 1,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
+              style: TextStyle(color: rightColor, fontSize: size),
             ),
           ),
         ),

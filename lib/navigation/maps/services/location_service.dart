@@ -14,6 +14,12 @@ class LocationService {
       throw Exception("Permission Denied");
     }
 
-    return await Geolocator.getCurrentPosition();
+    // Added timeLimit: avoids hanging forever if GPS fix takes too long
+    return await Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        timeLimit: Duration(seconds: 10),
+      ),
+    );
   }
 }

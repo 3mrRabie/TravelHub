@@ -257,7 +257,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       if (mounted) router.pushReplacement(AppRouter.kNavigationView);
                     } else {
                       messenger.showSnackBar(
-                        const SnackBar(content: Text("Google sign-in failed")),
+                        SnackBar(content: Text("google_signin_failed".tr())),
                       );
                     }
                   },

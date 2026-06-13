@@ -168,7 +168,7 @@ class _LoginFormState extends State<LoginForm> {
                     GoRouter.of(context).pushReplacement(AppRouter.kNavigationView);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Google sign-in failed")),
+                      SnackBar(content: Text("google_signin_failed".tr())),
                     );
                   }
                 },

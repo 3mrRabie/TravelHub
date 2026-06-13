@@ -20,9 +20,27 @@ class _FullMapScreenState extends State<FullMapScreen> {
   @override
   void initState() {
     super.initState();
-    mapController.setInitialLocation(() => setState(() {}));
 
-   
+    // FIXED: await the future and catch any errors so cameraPosition
+    // is always set (falls back to Cairo) and the spinner goes away.
+    mapController.setInitialLocation(() {
+      if (mounted) setState(() {});
+    }).then((_) {
+      // After location loads, show a snackbar if permission was denied
+      if (mapController.locationError != null && mounted) {
+        final msg = mapController.locationError!.contains("Permission")
+            ? "Location permission denied — showing Egypt map"
+            : "Could not get your location — showing Egypt map";
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(msg),
+            behavior: SnackBarBehavior.floating,
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      }
+    });
+
     if (widget.targetLocation != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         final controller = await mapController.googleController.future;
@@ -37,7 +55,7 @@ class _FullMapScreenState extends State<FullMapScreen> {
           infoWindow: InfoWindow(title: widget.targetName),
         );
 
-        setState(() {});
+        if (mounted) setState(() {});
       });
     }
   }
@@ -53,6 +71,8 @@ class _FullMapScreenState extends State<FullMapScreen> {
     return Scaffold(
       body: Stack(
         children: [
+          // FIXED: cameraPosition is now always set after init (either real
+          // location or Cairo fallback), so the spinner always goes away.
           mapController.cameraPosition == null
               ? const Center(child: CircularProgressIndicator())
               : GoogleMap(
@@ -65,7 +85,7 @@ class _FullMapScreenState extends State<FullMapScreen> {
                   },
                 ),
 
-        
+          // Search bar
           Positioned(
             top: MediaQuery.of(context).padding.top + 10,
             left: 15,
@@ -76,23 +96,30 @@ class _FullMapScreenState extends State<FullMapScreen> {
                 color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(0.15), blurRadius: 8, offset: const Offset(0, 2)),
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.15),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
                 ],
               ),
               child: TextField(
                 controller: searchController,
                 textInputAction: TextInputAction.search,
                 onSubmitted: (val) async {
-                  final result = await mapController.searchLocation(val.trim());
+                  final result =
+                      await mapController.searchLocation(val.trim());
                   if (result != null) {
-                    final google = await mapController.googleController.future;
-                    google.animateCamera(CameraUpdate.newLatLngZoom(result, 15));
+                    final google =
+                        await mapController.googleController.future;
+                    google.animateCamera(
+                        CameraUpdate.newLatLngZoom(result, 15));
                     mapController.myMarker = Marker(
                       markerId: const MarkerId("search_result"),
                       position: result,
                       infoWindow: InfoWindow(title: val.trim()),
                     );
-                    setState(() {});
+                    if (mounted) setState(() {});
                   }
                 },
                 decoration: InputDecoration(
@@ -101,16 +128,20 @@ class _FullMapScreenState extends State<FullMapScreen> {
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search),
                     onPressed: () async {
-                      final result = await mapController.searchLocation(searchController.text.trim());
+                      final result = await mapController
+                          .searchLocation(searchController.text.trim());
                       if (result != null) {
-                        final google = await mapController.googleController.future;
-                        google.animateCamera(CameraUpdate.newLatLngZoom(result, 15));
+                        final google =
+                            await mapController.googleController.future;
+                        google.animateCamera(
+                            CameraUpdate.newLatLngZoom(result, 15));
                         mapController.myMarker = Marker(
                           markerId: const MarkerId("search_result"),
                           position: result,
-                          infoWindow: InfoWindow(title: searchController.text.trim()),
+                          infoWindow: InfoWindow(
+                              title: searchController.text.trim()),
                         );
-                        setState(() {});
+                        if (mounted) setState(() {});
                       }
                     },
                   ),
@@ -118,11 +149,14 @@ class _FullMapScreenState extends State<FullMapScreen> {
               ),
             ),
           ),
+
+          // My location FAB
           Positioned(
             bottom: 30,
             left: 20,
             child: FloatingActionButton(
-              onPressed: () => mapController.goToMyLocation(() => setState(() {})),
+              onPressed: () =>
+                  mapController.goToMyLocation(() => setState(() {})),
               heroTag: "locationBtn",
               backgroundColor: kBackgroundColor,
               foregroundColor: kWhite,

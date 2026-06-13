@@ -8,6 +8,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:travel_hub/navigation/maps/services/hotel_service.dart';
 import 'package:travel_hub/navigation/maps/services/location_service.dart';
 
+// Fallback centre (Cairo, Egypt) shown when location permission is denied
+// or GPS is unavailable, so the map always loads instead of spinning forever.
+const LatLng _kCairoCenter = LatLng(30.0444, 31.2357);
+
 class FullMapController {
   final Completer<GoogleMapController> googleController = Completer();
 
@@ -15,24 +19,44 @@ class FullMapController {
   Marker? myMarker;
   Set<Marker> hotelMarkers = {};
 
+  /// Non-null when we fell back to the default location.
+  /// The UI can read this to show a permission-denied banner.
+  String? locationError;
+
   // Cache the bitmap so we only render it once
   BitmapDescriptor? _cachedHotelIcon;
 
   Future<void> setInitialLocation(Function refreshUI) async {
-    Position pos = await LocationService.determinePosition();
+    try {
+      final Position pos = await LocationService.determinePosition();
 
-    cameraPosition = CameraPosition(
-      target: LatLng(pos.latitude, pos.longitude),
-      zoom: 13,
-    );
+      cameraPosition = CameraPosition(
+        target: LatLng(pos.latitude, pos.longitude),
+        zoom: 13,
+      );
 
-    myMarker = Marker(
-      markerId: const MarkerId("me"),
-      position: LatLng(pos.latitude, pos.longitude),
-      infoWindow: const InfoWindow(title: "My Location"),
-    );
+      myMarker = Marker(
+        markerId: const MarkerId("me"),
+        position: LatLng(pos.latitude, pos.longitude),
+        infoWindow: const InfoWindow(title: "My Location"),
+      );
 
-    await _loadHotelMarkers(refreshUI);
+      locationError = null;
+    } catch (e) {
+      // Location unavailable — fall back to Cairo so the map still loads.
+      debugPrint('Location error: $e');
+      locationError = e.toString();
+      cameraPosition = const CameraPosition(target: _kCairoCenter, zoom: 12);
+      myMarker = null; // no "me" marker when we don't know the real position
+    }
+
+    // Load hotel markers regardless of whether GPS succeeded.
+    try {
+      await _loadHotelMarkers(refreshUI);
+    } catch (e) {
+      debugPrint('Hotel markers error: $e');
+    }
+
     refreshUI();
   }
 
@@ -41,35 +65,34 @@ class FullMapController {
   // ─────────────────────────────────────────────────────────────────────────
 
   /// Renders a small (44 dp) circular hotel marker at [pixelRatio] density.
-  /// Returns a [BitmapDescriptor] backed by PNG bytes from a Canvas.
   Future<BitmapDescriptor> _buildHotelMarker({double pixelRatio = 3.0}) async {
     if (_cachedHotelIcon != null) return _cachedHotelIcon!;
 
-    const double logicalSize = 44.0; // dp — compact, professional
+    const double logicalSize = 44.0;
     final double px = logicalSize * pixelRatio;
     final double r = px / 2;
 
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder, Rect.fromLTWH(0, 0, px, px));
 
-    // ── Drop-shadow ──────────────────────────────────────────────────
+    // Drop-shadow
     final shadowPaint = Paint()
       ..color = Colors.black.withValues(alpha: 0.25)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
     canvas.drawCircle(Offset(r, r + 2), r - 4, shadowPaint);
 
-    // ── Circle background (brand red) ────────────────────────────────
+    // Circle background (brand red)
     final bgPaint = Paint()..color = const Color(0xFFE53935);
     canvas.drawCircle(Offset(r, r), r - 4, bgPaint);
 
-    // ── White ring ───────────────────────────────────────────────────
+    // White ring
     final ringPaint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.stroke
       ..strokeWidth = px * 0.045;
     canvas.drawCircle(Offset(r, r), r - 4, ringPaint);
 
-    // ── Hotel icon (Material Icons codepoint) ─────────────────────────
+    // Hotel icon
     final iconPainter = TextPainter(textDirection: TextDirection.ltr);
     iconPainter.text = TextSpan(
       text: String.fromCharCode(Icons.hotel.codePoint),
@@ -92,7 +115,6 @@ class FullMapController {
 
     _cachedHotelIcon = BitmapDescriptor.bytes(
       byteData!.buffer.asUint8List(),
-      // Tell Google Maps the logical size so anchor math is correct
       width: logicalSize,
       height: logicalSize,
     );
@@ -112,7 +134,7 @@ class FullMapController {
           markerId: MarkerId(hotel.name),
           position: LatLng(hotel.latitude, hotel.longitude),
           icon: icon,
-          anchor: const Offset(0.5, 0.5), // centre of circle, not bottom tip
+          anchor: const Offset(0.5, 0.5),
           infoWindow: InfoWindow(
             title: hotel.name,
             snippet: '⭐ ${hotel.rating}',
@@ -126,11 +148,15 @@ class FullMapController {
   }
 
   Future<void> goToMyLocation(Function refreshUI) async {
-    Position pos = await LocationService.determinePosition();
-    final controller = await googleController.future;
-    controller.animateCamera(
-      CameraUpdate.newLatLngZoom(LatLng(pos.latitude, pos.longitude), 16),
-    );
+    try {
+      final Position pos = await LocationService.determinePosition();
+      final controller = await googleController.future;
+      controller.animateCamera(
+        CameraUpdate.newLatLngZoom(LatLng(pos.latitude, pos.longitude), 16),
+      );
+    } catch (e) {
+      debugPrint('goToMyLocation error: $e');
+    }
   }
 
   Future<LatLng?> searchLocation(String query) async {

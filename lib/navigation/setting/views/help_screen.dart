@@ -3,6 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:travel_hub/constant.dart';
 
+/// Help & Support screen.
+///
+/// Root cause of Issue 2: every string — contact card copy, FAQ section
+/// heading, and all 7 question/answer pairs — was hardcoded in English.
+/// Fix: FAQ items are now built from translation-key pairs that are
+/// resolved at render time via .tr(), so the full screen updates when the
+/// user switches language in Settings → Language without restarting.
 class HelpScreen extends StatefulWidget {
   const HelpScreen({super.key});
 
@@ -11,65 +18,35 @@ class HelpScreen extends StatefulWidget {
 }
 
 class _HelpScreenState extends State<HelpScreen> {
-  final List<_FaqItem> _faqs = [
-    _FaqItem(
-      q: 'How do I book a hotel?',
-      a: 'Open the Hotels tab, browse or search for a hotel, tap it to '
-          'view its details, then press "Book Now". Fill in your travel '
-          'dates, number of guests, and contact details, then tap '
-          '"Complete Booking".',
-    ),
-    _FaqItem(
-      q: 'Can I cancel a reservation?',
-      a: 'TravelHub is currently a demo application. In the live version, '
-          'cancellation policies will be shown per hotel. You will be able '
-          'to cancel from your booking history.',
-    ),
-    _FaqItem(
-      q: 'How do I change the language?',
-      a: 'Go to Settings → Language, then choose English or Arabic. '
-          'The language switches instantly across the whole app.',
-    ),
-    _FaqItem(
-      q: 'How do I switch to dark mode?',
-      a: 'Tap the Dark Mode / Light Mode button at the top of the '
-          'Settings screen. The theme changes immediately.',
-    ),
-    _FaqItem(
-      q: 'How does the AI Camera work?',
-      a: 'Tap the AI Camera option on the home screen. Point your camera '
-          'at any landmark or place. The AI will identify it and provide '
-          'an audio-narrated description.',
-    ),
-    _FaqItem(
-      q: 'How do I save a favourite hotel or landmark?',
-      a: 'Tap the heart icon on any hotel card or landmark card. '
-          'Access all your favourites from the heart button in the '
-          'top-right corner of the Hotels or Places screen.',
-    ),
-    _FaqItem(
-      q: 'I forgot my password. What do I do?',
-      a: 'On the Login screen tap "Forgot Password?". Enter your email '
-          'address and we will send you a reset link.',
-    ),
+  // Key pairs for the 7 FAQ items.
+  // Using parallel lists instead of a list of model objects keeps this
+  // simple and avoids creating a disposable data class — the question and
+  // answer are looked up dynamically via .tr() inside build(), so language
+  // switches are reflected immediately.
+  static const List<String> _qKeys = [
+    'faq_q1', 'faq_q2', 'faq_q3', 'faq_q4',
+    'faq_q5', 'faq_q6', 'faq_q7',
+  ];
+  static const List<String> _aKeys = [
+    'faq_a1', 'faq_a2', 'faq_a3', 'faq_a4',
+    'faq_a5', 'faq_a6', 'faq_a7',
   ];
 
   final Set<int> _expanded = {};
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black87;
-    final subColor =
-        theme.textTheme.bodyMedium?.color?.withOpacity(0.7) ?? Colors.black54;
+    final theme    = Theme.of(context);
+    final textColor = theme.textTheme.bodyLarge?.color  ?? Colors.black87;
+    final subColor  = (theme.textTheme.bodyMedium?.color ?? Colors.black54)
+        .withOpacity(0.7);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: kBackgroundColor,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: Colors.white),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
@@ -80,13 +57,13 @@ class _HelpScreenState extends State<HelpScreen> {
       body: ListView(
         padding: EdgeInsets.all(20.r),
         children: [
-          // Contact card
+          // ── Contact support card ──────────────────────────────────────────
           Card(
             elevation: 2,
+            color: kBackgroundColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16.r),
             ),
-            color: kBackgroundColor,
             child: Padding(
               padding: EdgeInsets.all(16.r),
               child: Column(
@@ -98,7 +75,7 @@ class _HelpScreenState extends State<HelpScreen> {
                           color: Colors.white, size: 24),
                       SizedBox(width: 10.w),
                       Text(
-                        'Contact Support',
+                        'help_contact_title'.tr(),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -109,14 +86,14 @@ class _HelpScreenState extends State<HelpScreen> {
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    'support@travelhub.app',
+                    'help_contact_email'.tr(),
                     style: TextStyle(
                         color: Colors.white.withOpacity(0.85),
                         fontSize: 14.sp),
                   ),
                   SizedBox(height: 2.h),
                   Text(
-                    'Available Sunday – Thursday, 9 AM – 5 PM (EET)',
+                    'help_contact_hours'.tr(),
                     style: TextStyle(
                         color: Colors.white.withOpacity(0.7),
                         fontSize: 12.sp),
@@ -127,8 +104,9 @@ class _HelpScreenState extends State<HelpScreen> {
           ),
           SizedBox(height: 24.h),
 
+          // ── FAQ heading ───────────────────────────────────────────────────
           Text(
-            'Frequently Asked Questions',
+            'help_faq_heading'.tr(),
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
@@ -137,8 +115,8 @@ class _HelpScreenState extends State<HelpScreen> {
           ),
           SizedBox(height: 12.h),
 
-          // FAQ accordion
-          ...List.generate(_faqs.length, (i) {
+          // ── FAQ accordion ─────────────────────────────────────────────────
+          ...List.generate(_qKeys.length, (i) {
             final isOpen = _expanded.contains(i);
             return Card(
               elevation: 1,
@@ -156,7 +134,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   }
                 }),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
+                  padding: EdgeInsetsDirectional.symmetric(
                       horizontal: 16.w, vertical: 14.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,7 +143,7 @@ class _HelpScreenState extends State<HelpScreen> {
                         children: [
                           Expanded(
                             child: Text(
-                              _faqs[i].q,
+                              _qKeys[i].tr(),
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w600,
@@ -184,7 +162,7 @@ class _HelpScreenState extends State<HelpScreen> {
                       if (isOpen) ...[
                         SizedBox(height: 10.h),
                         Text(
-                          _faqs[i].a,
+                          _aKeys[i].tr(),
                           style: TextStyle(
                             fontSize: 13.sp,
                             color: subColor,
@@ -204,10 +182,4 @@ class _HelpScreenState extends State<HelpScreen> {
       ),
     );
   }
-}
-
-class _FaqItem {
-  final String q;
-  final String a;
-  const _FaqItem({required this.q, required this.a});
 }

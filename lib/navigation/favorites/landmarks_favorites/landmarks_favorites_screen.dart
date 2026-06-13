@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,14 +17,12 @@ class LandMarkFavoritesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Favorite Places"),
+        title: Text('favorite_places'.tr()),
         centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_forever),
-            onPressed: () {
-              context.read<LandMarkFavoritesCubit>().clearFavorites();
-            },
+            onPressed: () => context.read<LandMarkFavoritesCubit>().clearFavorites(),
           ),
         ],
       ),
@@ -35,7 +34,7 @@ class LandMarkFavoritesScreen extends StatelessWidget {
 
           if (state is LandMarkFavoritesLoaded) {
             if (state.favorites.isEmpty) {
-              return const Center(child: Text("No favorite places yet"));
+              return Center(child: Text('no_favorite_places'.tr()));
             }
 
             return ListView.builder(
@@ -45,11 +44,8 @@ class LandMarkFavoritesScreen extends StatelessWidget {
                 final landMark = state.favorites[index];
 
                 return GestureDetector(
-                  onTap: () {
-                    GoRouter.of(
-                      context,
-                    ).push(AppRouter.kLandMarkDetailsView, extra: landMark);
-                  },
+                  onTap: () => GoRouter.of(context)
+                      .push(AppRouter.kLandMarkDetailsView, extra: landMark),
                   child: Card(
                     elevation: 5.r,
                     shape: RoundedRectangleBorder(
@@ -60,10 +56,13 @@ class LandMarkFavoritesScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Stack(
-                          alignment: Alignment.topLeft,
+                          // AlignmentDirectional.topStart: heart icon sits at
+                          // the leading edge in both LTR (top-left) and RTL
+                          // (top-right), never colliding with image gradient.
+                          alignment: AlignmentDirectional.topStart,
                           children: [
                             Stack(
-                              alignment: Alignment.bottomLeft,
+                              alignment: AlignmentDirectional.bottomStart,
                               children: [
                                 ClipRRect(
                                   borderRadius: BorderRadius.vertical(
@@ -71,9 +70,9 @@ class LandMarkFavoritesScreen extends StatelessWidget {
                                   ),
                                   child: CachedNetworkImage(
                                     placeholder: (context, url) =>
-                                        CircularProgressIndicator(),
+                                        const CircularProgressIndicator(),
                                     errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
+                                        const Icon(Icons.error),
                                     height: 180.h,
                                     width: double.infinity,
                                     fit: BoxFit.cover,
@@ -83,8 +82,7 @@ class LandMarkFavoritesScreen extends StatelessWidget {
                                 Padding(
                                   padding: EdgeInsets.all(12.r),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Text(
@@ -106,16 +104,14 @@ class LandMarkFavoritesScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            BlocBuilder<
-                              LandMarkFavoritesCubit,
-                              LandMarkFavoritesState
-                            >(
-                              buildWhen: (prev, curr) => curr is LandMarkFavoritesLoaded || curr is LandMarkFavoritesLoading,
+                            BlocBuilder<LandMarkFavoritesCubit, LandMarkFavoritesState>(
+                              buildWhen: (prev, curr) =>
+                                  curr is LandMarkFavoritesLoaded ||
+                                  curr is LandMarkFavoritesLoading,
                               builder: (context, favState) {
-                                final favCubit = context
-                                    .read<LandMarkFavoritesCubit>();
+                                final favCubit =
+                                    context.read<LandMarkFavoritesCubit>();
                                 final isFav = favCubit.isFavorite(landMark);
-
                                 return IconButton(
                                   icon: Icon(
                                     isFav
@@ -123,9 +119,8 @@ class LandMarkFavoritesScreen extends StatelessWidget {
                                         : Icons.favorite_border,
                                     color: isFav ? Colors.red : Colors.white,
                                   ),
-                                  onPressed: () {
-                                    favCubit.toggleFavorite(landMark);
-                                  },
+                                  onPressed: () =>
+                                      favCubit.toggleFavorite(landMark),
                                 );
                               },
                             ),
@@ -136,7 +131,8 @@ class LandMarkFavoritesScreen extends StatelessWidget {
                           child: Text(
                             landMark.shortInfo,
                             style: TextStyle(
-                              color: Theme.of(context).textTheme.bodyMedium?.color,
+                              color:
+                                  Theme.of(context).textTheme.bodyMedium?.color,
                               fontSize: 14.sp,
                             ),
                           ),
@@ -153,7 +149,7 @@ class LandMarkFavoritesScreen extends StatelessWidget {
             return Center(child: Text(state.message));
           }
 
-          return const SizedBox();
+          return const SizedBox.shrink();
         },
       ),
     );

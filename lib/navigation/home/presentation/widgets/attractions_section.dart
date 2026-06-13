@@ -45,7 +45,7 @@ class _AttractionsSectionState extends State<AttractionsSection> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Nearby Attractions".tr(),
+              "Nearby Hotels".tr(),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.sp,
