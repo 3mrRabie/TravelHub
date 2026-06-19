@@ -55,6 +55,7 @@ dependencies:
   firebase_storage: ^12.4.10
   cloud_functions: ^5.6.2
   flutter_svg: ^2.2.3
+  crypto: ^3.0.6
   # app_links is the actively maintained successor to uni_links.
   # It has a correct AGP namespace, supports Android 8.x+ plugin API,
   # and exposes the same getInitialLink() + uriLinkStream surface.

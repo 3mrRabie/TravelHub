@@ -39,14 +39,32 @@ class _HomeScreenState extends State<HomeScreen> {
     final prefs = await SharedPreferences.getInstance();
     final user = FirebaseAuth.instance.currentUser;
 
+    // Prefer live Firebase user data — covers Google sign-in users whose
+    // name/email may never have been written to SharedPreferences.
+    final liveDisplayName = user?.displayName ?? '';
+    final liveEmail       = user?.email       ?? '';
+
+    // Write back to prefs so future cold-start reads also work correctly.
+    if (liveDisplayName.isNotEmpty) {
+      await prefs.setString('userName', liveDisplayName);
+    }
+    if (liveEmail.isNotEmpty) {
+      await prefs.setString('userEmail', liveEmail);
+    }
+
     setState(() {
-      userName = prefs.getString('userName') ?? 'User Name';
-      userEmail = prefs.getString('userEmail') ?? 'user@email.com';
+      userName  = liveDisplayName.isNotEmpty
+          ? liveDisplayName
+          : (prefs.getString('userName') ?? 'User Name');
+      userEmail = liveEmail.isNotEmpty
+          ? liveEmail
+          : (prefs.getString('userEmail') ?? 'user@email.com');
     });
+
     if (user != null && user.email != null) {
       final base64Image = prefs.getString('profile_image_base64_${user.email}');
       if (base64Image != null) {
-        savedMemoryImage = base64Decode(base64Image);
+        setState(() => savedMemoryImage = base64Decode(base64Image));
       } else {
         savedMemoryImage = null;
         localImage = null;
@@ -88,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (pickedFile != null) {
         final selectedImage = File(pickedFile.path);
-
+        if (!context.mounted) return;
         GoRouter.of(context).push(AppRouter.kCameraView, extra: selectedImage);
       }
     }
@@ -107,17 +125,23 @@ class _HomeScreenState extends State<HomeScreen> {
           radius: 28.r,
           backgroundColor: kGrey.shade300,
           backgroundImage: savedMemoryImage != null
-              ? MemoryImage(savedMemoryImage!)
+              ? MemoryImage(savedMemoryImage!) as ImageProvider
               : localImage != null
-              ? FileImage(localImage!)
-              : savedImageUrl != null
-              ? NetworkImage(savedImageUrl!)
+              ? FileImage(localImage!) as ImageProvider
               : null,
-          child:
-              (localImage == null &&
-                  savedMemoryImage == null &&
-                  savedImageUrl == null)
-              ? Icon(Icons.person, size: 30.r)
+          child: savedMemoryImage == null && localImage == null
+              ? (savedImageUrl != null
+                  ? ClipOval(
+                      child: Image.network(
+                        savedImageUrl!,
+                        width: 56.r,
+                        height: 56.r,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) =>
+                            Icon(Icons.person, size: 30.r),
+                      ),
+                    )
+                  : Icon(Icons.person, size: 30.r))
               : null,
         ),
         SizedBox(width: 14.w),

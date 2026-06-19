@@ -1,69 +1,201 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:travel_hub/constant.dart';
+import 'package:travel_hub/core/utils/currency_formatter.dart';
+import 'package:travel_hub/navigation/hotels/models/hotels_model.dart';
 import 'package:travel_hub/navigation/hotels/presentation/widgets/custom_button.dart';
 import 'package:travel_hub/navigation/hotels/presentation/widgets/custom_field.dart';
 
 class BookScreen extends StatefulWidget {
-  const BookScreen({super.key});
+  /// The hotel to book. May be null if the screen is opened without context.
+  final Hotels? hotel;
+
+  const BookScreen({super.key, this.hotel});
 
   @override
   State<BookScreen> createState() => _BookScreenState();
 }
 
 class _BookScreenState extends State<BookScreen> {
-  final formKey = GlobalKey<FormState>();
-  final TextEditingController destination = TextEditingController();
-  final TextEditingController checkIn = TextEditingController();
-  final TextEditingController checkOut = TextEditingController();
-  final TextEditingController guests = TextEditingController();
-  final TextEditingController fullName = TextEditingController();
-  final TextEditingController email = TextEditingController();
-  final TextEditingController phoneNumber = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _destination = TextEditingController();
+  final TextEditingController _checkIn = TextEditingController();
+  final TextEditingController _checkOut = TextEditingController();
+  final TextEditingController _guests = TextEditingController();
+  final TextEditingController _fullName = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _phone = TextEditingController();
 
-  late DateTime todayDate;
+  DateTime? _checkInDate;
+  DateTime? _checkOutDate;
+  late final DateTime _today;
+  bool _isSubmitting = false;
+
+  // ── derived ──────────────────────────────────────────────────────────────
+  /// Nights is always derived from the selected dates.
+  /// Returns 0 when dates are not yet chosen.
+  int get _nights {
+    if (_checkInDate != null && _checkOutDate != null) {
+      final diff = _checkOutDate!.difference(_checkInDate!).inDays;
+      return diff > 0 ? diff : 0;
+    }
+    return 0;
+  }
+
+  double get _pricePerNight => widget.hotel?.pricePerNight ?? 0;
+  double get _totalPrice => _pricePerNight * _nights;
 
   @override
   void initState() {
     super.initState();
-    final today = DateTime.now();
-    todayDate = DateTime(today.year, today.month, today.day);
+    final now = DateTime.now();
+    _today = DateTime(now.year, now.month, now.day);
+
+    // ── Auto-fill destination from selected hotel ─────────────────────────
+    if (widget.hotel != null) {
+      _destination.text = widget.hotel!.name;
+    }
+
+    // Contact fields (Full Name, Email, Phone) intentionally left empty.
+    // They must only contain user-entered values.
   }
 
   @override
   void dispose() {
-    destination.dispose();
-    checkIn.dispose();
-    checkOut.dispose();
-    guests.dispose();
-    fullName.dispose();
-    email.dispose();
-    phoneNumber.dispose();
+    _destination.dispose();
+    _checkIn.dispose();
+    _checkOut.dispose();
+    _guests.dispose();
+    _fullName.dispose();
+    _email.dispose();
+    _phone.dispose();
     super.dispose();
   }
 
-  Future<void> selectDate(
-    BuildContext context,
-    TextEditingController controller,
-  ) async {
-    final DateTime? pickedDate = await showDatePicker(
+  // ── Date picker ───────────────────────────────────────────────────────────
+  Future<void> _pickDate({required bool isCheckIn}) async {
+    final initial = isCheckIn
+        ? (_checkInDate ?? _today)
+        : (_checkOutDate ?? (_checkInDate?.add(const Duration(days: 1)) ?? _today));
+
+    final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2025),
+      initialDate: initial,
+      firstDate: _today,
       lastDate: DateTime(2030),
     );
-    if (pickedDate != null) {
-      setState(() {
-        controller.text = DateFormat('dd/MM/yyyy').format(pickedDate);
+    if (picked == null || !mounted) return;
+
+    setState(() {
+      if (isCheckIn) {
+        _checkInDate = picked;
+        _checkIn.text = DateFormat('dd/MM/yyyy').format(picked);
+        // Reset check-out if it's now invalid (same day or before check-in).
+        if (_checkOutDate != null && !_checkOutDate!.isAfter(picked)) {
+          _checkOutDate = null;
+          _checkOut.clear();
+        }
+      } else {
+        _checkOutDate = picked;
+        _checkOut.text = DateFormat('dd/MM/yyyy').format(picked);
+      }
+    });
+  }
+
+  // ── Validation ─────────────────────────────────────────────────────────────
+  String? _validateDestination(String? v) {
+    if (v == null || v.isEmpty) return 'Please enter a destination'.tr();
+    return null;
+  }
+
+  String? _validateCheckIn(String? v) {
+    if (v == null || v.isEmpty) return 'Please select a check-in date'.tr();
+    if (_checkInDate == null) return 'Invalid date'.tr();
+    if (_checkInDate!.isBefore(_today)) return 'Check-in cannot be in the past'.tr();
+    return null;
+  }
+
+  String? _validateCheckOut(String? v) {
+    if (v == null || v.isEmpty) return 'Please select a check-out date'.tr();
+    if (_checkOutDate == null) return 'Invalid date'.tr();
+    if (_checkInDate != null && !_checkOutDate!.isAfter(_checkInDate!)) {
+      return 'Check-out must be after check-in'.tr();
+    }
+    return null;
+  }
+
+  // ── Booking submission ─────────────────────────────────────────────────────
+  Future<void> _submit() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    // Guard: dates must be chosen and produce at least 1 night.
+    if (_nights < 1) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Number of nights must be at least 1'.tr())),
+      );
+      return;
+    }
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please sign in to book'.tr())),
+      );
+      return;
+    }
+
+    setState(() => _isSubmitting = true);
+    try {
+      // Determine dates for Firestore — may be null if user only used stepper.
+      final checkInStored = _checkInDate;
+      final checkOutStored = _checkOutDate;
+
+      await FirebaseFirestore.instance.collection('bookings').add({
+        'userId': user.uid,
+        // ── Hotel data ──
+        'hotelId': widget.hotel?.name ?? _destination.text.trim(),
+        'hotelName': widget.hotel?.name ?? _destination.text.trim(),
+        'destination': _destination.text.trim(),
+        'pricePerNight': _pricePerNight,
+        // ── Booking details ──
+        'numberOfNights': _nights,
+        'totalPrice': _totalPrice,
+        'checkInDate': checkInStored != null
+            ? DateFormat('dd/MM/yyyy').format(checkInStored)
+            : _checkIn.text.trim(),
+        'checkOutDate': checkOutStored != null
+            ? DateFormat('dd/MM/yyyy').format(checkOutStored)
+            : _checkOut.text.trim(),
+        'guestCount': int.tryParse(_guests.text.trim()) ?? 1,
+        // ── Contact ──
+        'fullName': _fullName.text.trim(),
+        'email': _email.text.trim(),
+        'phone': _phone.text.trim(),
+        // ── Legacy / compat fields ──
+        'userEmail': user.email ?? '',
+        'hotelCity': widget.hotel?.city ?? '',
+        'status': 'confirmed',
+        'createdAt': FieldValue.serverTimestamp(),
       });
+
+      if (!mounted) return;
+      _showConfirmationDialog();
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${'Booking failed'.tr()}: $e')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isSubmitting = false);
     }
   }
 
-  void _onBookingComplete() {
-    if (!formKey.currentState!.validate()) return;
-
+  // ── Success dialog ─────────────────────────────────────────────────────────
+  void _showConfirmationDialog() {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -75,42 +207,37 @@ class _BookScreenState extends State<BookScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Animated check-mark circle
               Container(
                 width: 80.r,
                 height: 80.r,
                 decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.12),
+                  color: Colors.green.withValues(alpha: 0.12),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.check_circle_rounded,
-                    color: Colors.green, size: 56.r),
+                child:
+                    Icon(Icons.check_circle_rounded, color: Colors.green, size: 56.r),
               ),
               SizedBox(height: 20.h),
               Text(
-                "Booking Confirmed!".tr(),
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+                'Booking Confirmed!'.tr(),
+                style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 12.h),
               Text(
-                "booking_demo_note".tr(),
+                'booking_demo_note'.tr(),
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.grey[600],
-                  height: 1.5,
-                ),
+                style: TextStyle(fontSize: 14.sp, color: Colors.grey[600], height: 1.5),
               ),
               SizedBox(height: 8.h),
-              // Summary row
-              _summaryRow(Icons.hotel, destination.text),
-              _summaryRow(Icons.login_rounded, checkIn.text),
-              _summaryRow(Icons.logout_rounded, checkOut.text),
-              _summaryRow(Icons.people, '${guests.text} guest(s)'.tr()),
+              _summaryRow(Icons.hotel, _destination.text),
+              _summaryRow(Icons.login_rounded, _checkIn.text),
+              _summaryRow(Icons.logout_rounded, _checkOut.text),
+              _summaryRow(Icons.nights_stay_outlined, '$_nights ${'night(s)'.tr()}'),
+              _summaryRow(Icons.people, '${_guests.text} ${'guest(s)'.tr()}'),
+              _summaryRow(
+                  Icons.attach_money,
+                  CurrencyFormatter.format(_totalPrice)),
               SizedBox(height: 20.h),
               SizedBox(
                 width: double.infinity,
@@ -123,14 +250,13 @@ class _BookScreenState extends State<BookScreen> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pop(ctx); // close dialog
+                    Navigator.pop(ctx);
                     _clearForm();
-                    Navigator.pop(context); // back to hotel details
+                    Navigator.pop(context);
                   },
                   child: Text(
-                    "Done".tr(),
-                    style: TextStyle(
-                        color: Colors.white, fontSize: 16.sp),
+                    'Done'.tr(),
+                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
                   ),
                 ),
               ),
@@ -161,24 +287,29 @@ class _BookScreenState extends State<BookScreen> {
   }
 
   void _clearForm() {
-    destination.clear();
-    checkIn.clear();
-    checkOut.clear();
-    guests.clear();
-    fullName.clear();
-    email.clear();
-    phoneNumber.clear();
+    _destination.clear();
+    _checkIn.clear();
+    _checkOut.clear();
+    _guests.clear();
+    _fullName.clear();
+    _email.clear();
+    _phone.clear();
+    _checkInDate = null;
+    _checkOutDate = null;
   }
 
+  // ── Build ──────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final cardColor = isDark ? const Color(0xFF1E1E2E) : Colors.white;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kBackgroundColor,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: Colors.white),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Column(
@@ -186,146 +317,229 @@ class _BookScreenState extends State<BookScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Book Your Trip".tr(),
-              style: TextStyle(color: Colors.white, fontSize: 24.sp),
+              'Book Your Trip'.tr(),
+              style: TextStyle(color: Colors.white, fontSize: 20.sp),
             ),
             Text(
-              "Complete your reservation".tr(),
-              style: TextStyle(
-                  color: const Color(0xffDBEAFE), fontSize: 16.sp),
+              'Complete your reservation'.tr(),
+              style: TextStyle(color: const Color(0xffDBEAFE), fontSize: 13.sp),
             ),
           ],
         ),
       ),
-      // Use theme background so dark mode works correctly
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: Padding(
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: EdgeInsets.all(16.r),
+          children: [
+            // ── Destination ──────────────────────────────────────────────
+            CustomField(
+              title: 'Destination'.tr(),
+              width: double.infinity,
+              controller: _destination,
+              validator: _validateDestination,
+              hint: 'Enter city or hotel name'.tr(),
+            ),
+
+            // ── Dates ────────────────────────────────────────────────────
+            Row(
+              children: [
+                Expanded(
+                  child: CustomField(
+                    title: 'Check-in'.tr(),
+                    width: double.infinity,
+                    controller: _checkIn,
+                    keyboard: TextInputType.none,
+                    onTap: () => _pickDate(isCheckIn: true),
+                    validator: _validateCheckIn,
+                    icon: Icons.calendar_today,
+                    hint: 'DD/MM/YYYY',
+                  ),
+                ),
+                Expanded(
+                  child: CustomField(
+                    title: 'Check-out'.tr(),
+                    width: double.infinity,
+                    controller: _checkOut,
+                    keyboard: TextInputType.none,
+                    onTap: () => _pickDate(isCheckIn: false),
+                    validator: _validateCheckOut,
+                    icon: Icons.calendar_today,
+                    hint: 'DD/MM/YYYY',
+                  ),
+                ),
+              ],
+            ),
+
+            // ── Price summary card (updates live) ─────────────────────────
+            if (widget.hotel != null && _pricePerNight > 0)
+              _PriceSummaryCard(
+                hotelName: widget.hotel!.name,
+                pricePerNight: _pricePerNight,
+                nights: _nights,
+                totalPrice: _totalPrice,
+                cardColor: cardColor,
+              ),
+
+            // ── Guests ───────────────────────────────────────────────────
+            CustomField(
+              title: 'Guests'.tr(),
+              width: double.infinity,
+              controller: _guests,
+              keyboard: TextInputType.number,
+              validator: (v) => (v == null || v.isEmpty)
+                  ? 'Please enter the number of guests'.tr()
+                  : null,
+              icon: Icons.people_alt_outlined,
+            ),
+
+            Divider(color: const Color(0xffF3F3F5), thickness: 2.h),
+
+            Text(
+              'Contact Information'.tr(),
+              style: TextStyle(
+                  color: theme.textTheme.bodyLarge?.color, fontSize: 18.sp),
+            ),
+            SizedBox(height: 12.h),
+
+            CustomField(
+              title: 'Full Name'.tr(),
+              width: double.infinity,
+              controller: _fullName,
+              validator: (v) => (v == null || v.isEmpty)
+                  ? 'Please enter your full name'.tr()
+                  : null,
+              hint: 'Enter your full name'.tr(),
+            ),
+
+            CustomField(
+              title: 'Email'.tr(),
+              width: double.infinity,
+              controller: _email,
+              keyboard: TextInputType.emailAddress,
+              validator: (v) {
+                if (v == null || v.isEmpty) return 'Please enter your email address'.tr();
+                if (!v.contains('@')) return 'Please enter a valid email'.tr();
+                return null;
+              },
+              hint: 'Enter your email'.tr(),
+            ),
+
+            CustomField(
+              title: 'Phone Number'.tr(),
+              width: double.infinity,
+              controller: _phone,
+              keyboard: TextInputType.phone,
+              validator: (v) {
+                if (v == null || v.isEmpty) return 'Please enter your phone number'.tr();
+                if (!RegExp(r'^01[0-9]{9}$').hasMatch(v)) {
+                  return 'Please enter a valid Egyptian phone number'.tr();
+                }
+                return null;
+              },
+              hint: 'Enter your phone number'.tr(),
+            ),
+
+            SizedBox(height: 8.h),
+
+            _isSubmitting
+                ? const Center(child: CircularProgressIndicator())
+                : CustomButton(
+                    buttonText: 'Complete Booking'.tr(),
+                    icon: Icons.payment,
+                    onPressed: _submit,
+                  ),
+            SizedBox(height: 20.h),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+// ─── Price Summary Card ────────────────────────────────────────────────────────
+
+
+class _PriceSummaryCard extends StatelessWidget {
+  final String hotelName;
+  final double pricePerNight;
+  final int nights;
+  final double totalPrice;
+  final Color cardColor;
+
+  const _PriceSummaryCard({
+    required this.hotelName,
+    required this.pricePerNight,
+    required this.nights,
+    required this.totalPrice,
+    required this.cardColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 3,
+      color: cardColor,
+      margin: EdgeInsets.symmetric(vertical: 12.h),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+      child: Padding(
         padding: EdgeInsets.all(16.r),
-        child: Form(
-          key: formKey,
-          child: ListView(
-            children: [
-              CustomField(
-                title: "Destination".tr(),
-                width: double.infinity,
-                controller: destination,
-                validator: (value) => (value == null || value.isEmpty)
-                    ? "Please enter city or hotel name".tr()
-                    : null,
-                hint: "Enter city or hotel name".tr(),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomField(
-                      title: "Check-in".tr(),
-                      width: double.infinity,
-                      controller: checkIn,
-                      keyboard: TextInputType.datetime,
-                      onTap: () => selectDate(context, checkIn),
-                      validator: _validateDate,
-                      icon: Icons.calendar_today,
-                      hint: "DD/MM/YYYY",
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.hotel, color: kBackgroundColor, size: 20.r),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: Text(
+                    hotelName,
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  Expanded(
-                    child: CustomField(
-                      title: "Check-out".tr(),
-                      width: double.infinity,
-                      controller: checkOut,
-                      keyboard: TextInputType.datetime,
-                      onTap: () => selectDate(context, checkOut),
-                      validator: _validateDate,
-                      icon: Icons.calendar_today,
-                      hint: "DD/MM/YYYY",
-                    ),
-                  ),
-                ],
+                ),
+              ],
+            ),
+            Divider(height: 20.h),
+            _row('Price per night'.tr(),
+                CurrencyFormatter.format(pricePerNight)),
+            _row('Nights'.tr(), nights > 0 ? '$nights' : '—'),
+            if (nights > 0) ...[
+              const Divider(),
+              _row(
+                'Total Price'.tr(),
+                CurrencyFormatter.format(totalPrice),
+                highlight: true,
               ),
-              CustomField(
-                title: "Guests".tr(),
-                width: double.infinity,
-                controller: guests,
-                keyboard: TextInputType.number,
-                validator: (value) => (value == null || value.isEmpty)
-                    ? "Please enter the number of guests".tr()
-                    : null,
-                icon: Icons.people_alt_outlined,
-              ),
-              Divider(
-                  color: const Color(0xffF3F3F5), thickness: 2.h),
-              Text(
-                "Contact Information".tr(),
-                style: TextStyle(
-                    color: theme.textTheme.bodyLarge?.color,
-                    fontSize: 18.sp),
-              ),
-              SizedBox(height: 12.h),
-              CustomField(
-                title: "Full Name".tr(),
-                width: double.infinity,
-                controller: fullName,
-                validator: (value) => (value == null || value.isEmpty)
-                    ? "Please enter your full name".tr()
-                    : null,
-                hint: "Enter your full name".tr(),
-              ),
-              CustomField(
-                title: "Email".tr(),
-                width: double.infinity,
-                controller: email,
-                keyboard: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter your email".tr();
-                  } else if (!value.contains("@")) {
-                    return "Please enter a valid email".tr();
-                  }
-                  return null;
-                },
-                hint: "Enter your email".tr(),
-              ),
-              CustomField(
-                title: "Phone Number".tr(),
-                width: double.infinity,
-                controller: phoneNumber,
-                keyboard: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter your phone number".tr();
-                  } else if (!RegExp(r'^01[0-9]{9}$').hasMatch(value)) {
-                    return 'Please enter a valid Egyptian phone number'.tr();
-                  }
-                  return null;
-                },
-                hint: "Enter your phone number".tr(),
-              ),
-              SizedBox(height: 8.h),
-              CustomButton(
-                buttonText: "Complete Booking".tr(),
-                icon: Icons.payment,
-                onPressed: _onBookingComplete,
-              ),
-              SizedBox(height: 20.h),
             ],
-          ),
+          ],
         ),
       ),
     );
   }
 
-  String? _validateDate(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Please enter a check in date".tr();
-    }
-    try {
-      final d = DateFormat('dd/MM/yyyy').parseStrict(value);
-      if (d.isBefore(todayDate)) {
-        return "Check in date can't be before today".tr();
-      }
-    } catch (_) {
-      return "The date format is incorrect".tr();
-    }
-    return null;
+  Widget _row(String label, String value, {bool highlight = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: TextStyle(fontSize: 13.sp, color: Colors.grey[600])),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: highlight ? 15.sp : 13.sp,
+              fontWeight: highlight ? FontWeight.bold : FontWeight.normal,
+              color: highlight ? kBackgroundColor : null,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

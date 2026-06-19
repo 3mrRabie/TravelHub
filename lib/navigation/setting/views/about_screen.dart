@@ -29,7 +29,7 @@ class AboutScreen extends StatelessWidget {
     final theme    = Theme.of(context);
     final text     = theme.textTheme.bodyLarge?.color  ?? Colors.black87;
     final subText  = (theme.textTheme.bodyMedium?.color ?? Colors.black54)
-        .withOpacity(0.75);
+        .withValues(alpha: 0.75);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -74,7 +74,7 @@ class AboutScreen extends StatelessWidget {
                     'about_subtitle'.tr(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.85),
+                      color: Colors.white.withValues(alpha: 0.85),
                       fontSize: 13.sp,
                     ),
                   ),

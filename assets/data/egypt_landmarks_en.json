@@ -24,16 +24,16 @@
     ]
   },
   {
-  "name": "Grand Egyptian Museum (GEM)",
-  "location": "Giza",
-  "shortInfo": "The largest archaeological museum in the world, located near the pyramids.",
-  "detailedInfo": "The Grand Egyptian Museum is Egypt's newest and most advanced cultural project.\n\nIt is designed to house the world's most significant collection of ancient Egyptian artifacts.\n\nFor the first time in history, the complete Tutankhamun collection — over 5,000 pieces — will be displayed together.\n\nThe museum overlooks the Giza Pyramids and features interactive halls, advanced preservation labs, and educational centers.\n\nIts architecture is designed to reflect the lines of the desert and the pyramids.",
-  "mainImage": "https://i.pinimg.com/736x/95/33/9c/95339ca9dcb96591deb6109bc7112a73.jpg",
-  "galleryImages": [
-  "https://i.pinimg.com/1200x/7e/de/10/7ede105dc70c2216f8c53c5698a7a6aa.jpg",
-  "https://i.pinimg.com/1200x/67/c8/ca/67c8ca1526f070607cabd80304b1e790.jpg", 
-  "https://i.pinimg.com/736x/0e/09/d6/0e09d62a20e7fe64dfc62ad14546752e.jpg"
-  ]
+    "name": "Grand Egyptian Museum (GEM)",
+    "location": "Giza",
+    "shortInfo": "The largest archaeological museum in the world, located near the pyramids.",
+    "detailedInfo": "The Grand Egyptian Museum is Egypt's newest and most advanced cultural project.\n\nIt is designed to house the world's most significant collection of ancient Egyptian artifacts.\n\nFor the first time in history, the complete Tutankhamun collection — over 5,000 pieces — will be displayed together.\n\nThe museum overlooks the Giza Pyramids and features interactive halls, advanced preservation labs, and educational centers.\n\nIts architecture is designed to reflect the lines of the desert and the pyramids.",
+    "mainImage": "https://i.pinimg.com/736x/95/33/9c/95339ca9dcb96591deb6109bc7112a73.jpg",
+    "galleryImages": [
+      "https://i.pinimg.com/1200x/7e/de/10/7ede105dc70c2216f8c53c5698a7a6aa.jpg",
+      "https://i.pinimg.com/1200x/67/c8/ca/67c8ca1526f070607cabd80304b1e790.jpg",
+      "https://i.pinimg.com/736x/0e/09/d6/0e09d62a20e7fe64dfc62ad14546752e.jpg"
+    ]
   },
   {
     "name": "Karnak Temple",
@@ -43,7 +43,7 @@
     "mainImage": "https://images.pexels.com/photos/16535883/pexels-photo-16535883.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200",
     "galleryImages": [
       "https://images.pexels.com/photos/18934598/pexels-photo-18934598.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Templo_de_Karnak%2C_Luxor%2C_Egipto%2C_2022-04-03%2C_DD_144.jpg/1200px-Templo_de_Karnak%2C_Luxor%2C_Egipto%2C_2022-04-03%2C_DD_144.jpg",
+      "https://i.pinimg.com/1200x/e4/2b/29/e42b297b5da31dddff239fbc5c18f6d3.jpg",
       "https://images.pexels.com/photos/15188088/pexels-photo-15188088.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
     ]
   },
@@ -67,7 +67,7 @@
     "mainImage": "https://d3rr2gvhjw0wwy.cloudfront.net/uploads/mandators/49581/file-manager/valley-of-the-kings,-valley-of-the-kings-egypt,-valley-of-the-kings-map.jpg",
     "galleryImages": [
       "https://d3rr2gvhjw0wwy.cloudfront.net/uploads/mandators/49581/file-manager/valley-of-the-kings-king-tut-tomb.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Columns_and_ceiling_in_tomb_of_Ramses_V_VI_in_Valley_of_the_Kings_on_West_Bank_of_Luxor_Egypt.jpg/1200px-Columns_and_ceiling_in_tomb_of_Ramses_V_VI_in_Valley_of_the_Kings_on_West_Bank_of_Luxor_Egypt.jpg",
+      "https://i.pinimg.com/1200x/64/ea/e5/64eae5e350fe520adfddcdff67bfbc72.jpg",
       "https://d3rr2gvhjw0wwy.cloudfront.net/uploads/mandators/49581/file-manager/tomb-of-ramses-ix.jpg"
     ]
   },
@@ -87,8 +87,8 @@
     "name": "Abu Simbel Temples",
     "location": "Aswan",
     "shortInfo": "Massive rock temples of Ramses II relocated to save them from flooding.",
-    "detailedInfo": "Carved into the rock, the twin temples at Abu Simbel feature colossal statues and were moved brick-by-brick during the Aswan High Dam project to preserve them.\n\nThe temples were originally built in the 13th century BC to honor Ramses II and his queen Nefertari. During the 1960s, the entire site was relocated to avoid flooding from Lake Nasser.\n\nTwice a year, sunlight illuminates the inner sanctuary, aligning with Ramses II\u2019s statue \u2014 a marvel of ancient engineering.",
-    "mainImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Abu_Simbel_Egypt_1.jpg/1200px-Abu_Simbel_Egypt_1.jpg",
+    "detailedInfo": "Carved into the rock, the twin temples at Abu Simbel feature colossal statues and were moved brick-by-brick during the Aswan High Dam project to preserve them.\n\nThe temples were originally built in the 13th century BC to honor Ramses II and his queen Nefertari. During the 1960s, the entire site was relocated to avoid flooding from Lake Nasser.\n\nTwice a year, sunlight illuminates the inner sanctuary, aligning with Ramses II’s statue — a marvel of ancient engineering.",
+    "mainImage": "https://i.pinimg.com/1200x/0c/87/9a/0c879a96537b4ec253d4870c301c12d5.jpg",
     "galleryImages": [
       "https://d3rr2gvhjw0wwy.cloudfront.net/uploads/mandators/49581/file-manager/abu-simbel-temple,-abu-simbel-tour,-the-temple-of-abu-simbel,-temple-of-ramses-ii-at-abu-simbe.jpg",
       "https://unitedguidestravel.com/wp-content/uploads/2022/04/the-temples-of-abu-simbel-inside-800x450.jpg",
@@ -99,7 +99,7 @@
     "name": "Egyptian Museum (Cairo)",
     "location": "Cairo",
     "shortInfo": "Houses a vast collection of ancient Egyptian artifacts.",
-    "detailedInfo": "The museum in Tahrir Square holds thousands of artifacts including treasures from Tutankhamun's tomb and extensive displays of pharaonic history.\n\nFounded in 1902, the museum houses over 120,000 artifacts including mummies, jewelry, and monumental statues. The golden mask of Tutankhamun is its most iconic exhibit.\n\nIt remains a key destination for those studying Egypt\u2019s ancient heritage.",
+    "detailedInfo": "The museum in Tahrir Square holds thousands of artifacts including treasures from Tutankhamun's tomb and extensive displays of pharaonic history.\n\nFounded in 1902, the museum houses over 120,000 artifacts including mummies, jewelry, and monumental statues. The golden mask of Tutankhamun is its most iconic exhibit.\n\nIt remains a key destination for those studying Egypt’s ancient heritage.",
     "mainImage": "https://images.unsplash.com/photo-1707068226685-27a15039f19b?ixid=M3w4MjEwMTd8MHwxfHNlYXJjaHwxfHxFZ3lwdGlhbiUyME11c2V1bSUyMCUyOENhaXJvJTI5JTIwQ2Fpcm98ZW58MHwwfHx8MTc2MTMxODE0MHww&ixlib=rb-4.1.0&auto=format&w=1200&h=800&fit=crop&q=80&fm=jpg",
     "galleryImages": [
       "https://images.unsplash.com/photo-1744381581909-ada5d6b1a93d?ixid=M3w4MjEwMTd8MHwxfHNlYXJjaHwyfHxFZ3lwdGlhbiUyME11c2V1bSUyMCUyOENhaXJvJTI5JTIwQ2Fpcm98ZW58MHwwfHx8MTc2MTMxODE0MHww&ixlib=rb-4.1.0&auto=format&w=1200&h=800&fit=crop&q=80&fm=jpg",
@@ -111,7 +111,7 @@
     "name": "Citadel of Saladin (Cairo Citadel)",
     "location": "Cairo",
     "shortInfo": "A medieval Islamic fortification overlooking Cairo.",
-    "detailedInfo": "Built by Salah ad-Din in the 12th century, the Citadel contains mosques, museums, and offers panoramic views of the city.\n\nThe Citadel features the Mosque of Muhammad Ali, museums, and ancient military structures. It served as Egypt\u2019s seat of government for nearly 700 years.\n\nFrom its walls, visitors can enjoy sweeping views of Cairo.",
+    "detailedInfo": "Built by Salah ad-Din in the 12th century, the Citadel contains mosques, museums, and offers panoramic views of the city.\n\nThe Citadel features the Mosque of Muhammad Ali, museums, and ancient military structures. It served as Egypt’s seat of government for nearly 700 years.\n\nFrom its walls, visitors can enjoy sweeping views of Cairo.",
     "mainImage": "https://images.pexels.com/photos/1755383/pexels-photo-1755383.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200",
     "galleryImages": [
       "https://www.goldenluxortours.com/wp-content/uploads/2024/05/Citadel-Egypt-Golden-Luxor-tours.webp",
@@ -123,7 +123,7 @@
     "name": "Khan el-Khalili Bazaar",
     "location": "Cairo (Islamic Cairo)",
     "shortInfo": "Historic marketplace famous for crafts and atmosphere.",
-    "detailedInfo": "Dating back to the Mamluk era, Khan el-Khalili is a vibrant souk offering handicrafts, spices, caf\u00e9s, and a taste of traditional Cairo life.\n\nFounded in the 14th century, this market still maintains its medieval atmosphere. You can find traditional lamps, jewelry, spices, and souvenirs.\n\nIt\u2019s also home to the famous El-Fishawy Caf\u00e9, one of the oldest coffeehouses in Cairo.",
+    "detailedInfo": "Dating back to the Mamluk era, Khan el-Khalili is a vibrant souk offering handicrafts, spices, cafés, and a taste of traditional Cairo life.\n\nFounded in the 14th century, this market still maintains its medieval atmosphere. You can find traditional lamps, jewelry, spices, and souvenirs.\n\nIt’s also home to the famous El-Fishawy Café, one of the oldest coffeehouses in Cairo.",
     "mainImage": "https://images.pexels.com/photos/33041900/pexels-photo-33041900.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200",
     "galleryImages": [
       "https://literarytoursegypt.com/wp-content/uploads/2022/08/Khan-El-Khalili-Bazaar-1024x685.jpg",
@@ -139,42 +139,42 @@
     "mainImage": "https://images.pexels.com/photos/13420332/pexels-photo-13420332.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200",
     "galleryImages": [
       "https://images.pexels.com/photos/33041862/pexels-photo-33041862.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/1_Al-Azhar_Mosque%2C_Cairo%2C_Egypt.tif/lossy-page1-1200px-1_Al-Azhar_Mosque%2C_Cairo%2C_Egypt.tif.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Courtyard_of_Al-Azhar_Mosque_Cairo_Egypt_2019_%281%29.jpg/1200px-Courtyard_of_Al-Azhar_Mosque_Cairo_Egypt_2019_%281%29.jpg"
+      "https://i.pinimg.com/1200x/8f/b2/1e/8fb21ee27b93c332c73a4abb12f47f6d.jpg",
+      "https://i.pinimg.com/1200x/5a/c9/71/5ac971315c83265f1d1016c72fdfc79d.jpg"
     ]
   },
   {
     "name": "Bibliotheca Alexandrina",
     "location": "Alexandria",
     "shortInfo": "Modern library and cultural center inspired by the ancient Library of Alexandria.",
-    "detailedInfo": "Opened in 2002, the Bibliotheca Alexandrina hosts millions of books, museums, and cultural events on the Mediterranean coast.\n\nThe building\u2019s circular design symbolizes the rising sun of knowledge. It includes several museums, planetariums, and galleries.\n\nIt revives the spirit of the ancient library that once made Alexandria a center of learning and culture.",
-    "mainImage": "https://images.pexels.com/photos/15238618/pexels-photo-15238618.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200",
+    "detailedInfo": "Opened in 2002, the Bibliotheca Alexandrina hosts millions of books, museums, and cultural events on the Mediterranean coast.\n\nThe building’s circular design symbolizes the rising sun of knowledge. It includes several museums, planetariums, and galleries.\n\nIt revives the spirit of the ancient library that once made Alexandria a center of learning and culture.",
+    "mainImage": "https://i.pinimg.com/1200x/2e/35/ae/2e35ae485497b30397104f4d0202081b.jpg",
     "galleryImages": [
       "https://images.pexels.com/photos/16714089/pexels-photo-16714089.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Bibliotheca_Alexandrina%2C_Egypt%2C_2013.jpg/1200px-Bibliotheca_Alexandrina%2C_Egypt%2C_2013.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Bibliotheca_Alexandrina_%282007-05-030%29.jpg/1200px-Bibliotheca_Alexandrina_%282007-05-030%29.jpg"
+      "https://i.pinimg.com/1200x/56/88/cf/5688cf5bda018ddf39a34be7d3d10810.jpg",
+      "https://i.pinimg.com/1200x/28/a4/a8/28a4a89210cca72d0ce42efac08db8ad.jpg"
     ]
   },
   {
     "name": "Montaza Palace & Gardens",
     "location": "Alexandria",
     "shortInfo": "Seaside palace with landscaped gardens and royal history.",
-    "detailedInfo": "Montaza was a royal summer residence with beautiful gardens and seaside views, now open for visitors and photography.\n\nBuilt in the early 20th century by King Fuad I, the palace combines Turkish and Florentine architectural styles. Its gardens span over 150 acres with rare plants and palm trees.\n\nToday, it\u2019s a favorite spot for both locals and tourists.",
+    "detailedInfo": "Montaza was a royal summer residence with beautiful gardens and seaside views, now open for visitors and photography.\n\nBuilt in the early 20th century by King Fuad I, the palace combines Turkish and Florentine architectural styles. Its gardens span over 150 acres with rare plants and palm trees.\n\nToday, it’s a favorite spot for both locals and tourists.",
     "mainImage": "https://d3rr2gvhjw0wwy.cloudfront.net/uploads/mandators/41668/cms/567936/940x500-1-50-eefee5533cde8c391f2b45fc660fef68.jpg",
     "galleryImages": [
       "https://d3rr2gvhjw0wwy.cloudfront.net/uploads/mandators/41668/cms/567942/940x500-1-50-cbb9fdf0316086dee125f4463038baf7.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Montaza_Palace%2C_Alexandria%2C_Egypt_-_Murat_%C3%96zsoy_2018.jpg/1200px-Montaza_Palace%2C_Alexandria%2C_Egypt_-_Murat_%C3%96zsoy_2018.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/MONTAZA_MARINA_LIGHTHOUSE%2C_ALEXANDRIA%2C_EGYPT.jpg/1200px-MONTAZA_MARINA_LIGHTHOUSE%2C_ALEXANDRIA%2C_EGYPT.jpg"
+      "https://i.pinimg.com/736x/27/27/bf/2727bf1047f4e79fd7aafe57af79c55a.jpg",
+      "https://i.pinimg.com/1200x/a8/fe/1d/a8fe1d7fdbfc4210457ec45c6761c065.jpg"
     ]
   },
   {
     "name": "Siwa Oasis",
     "location": "Western Desert",
     "shortInfo": "Remote oasis famous for palms, springs, and unique Berber culture.",
-    "detailedInfo": "Siwa offers salt lakes, springs, and the ancient Oracle Temple of Amun \u2014 a tranquil desert escape with rich local traditions.\n\nIt lies 750 km west of Cairo and is known for its salt lakes and ancient ruins. The Oracle Temple once welcomed Alexander the Great.\n\nVisitors enjoy traditional mud-brick architecture and Siwan handicrafts.",
+    "detailedInfo": "Siwa offers salt lakes, springs, and the ancient Oracle Temple of Amun — a tranquil desert escape with rich local traditions.\n\nIt lies 750 km west of Cairo and is known for its salt lakes and ancient ruins. The Oracle Temple once welcomed Alexander the Great.\n\nVisitors enjoy traditional mud-brick architecture and Siwan handicrafts.",
     "mainImage": "https://images.pexels.com/photos/27407384/pexels-photo-27407384.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200",
     "galleryImages": [
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Siwa_Oasis%2C_Cleopatra%27s_Bath%2C_Egypt.jpg/1200px-Siwa_Oasis%2C_Cleopatra%27s_Bath%2C_Egypt.jpg",
+      "https://i.pinimg.com/1200x/01/38/15/013815023a2a355d74f1c4d03d408f9b.jpg",
       "https://betamedia.experienceegypt.eg/media/experienceegypt/img/Original/2024/2/20/2024_2_20_20_18_1_705.jpeg",
       "https://miro.medium.com/v2/resize:fit:1100/format:webp/0*EEE2Q8VX5a7RaRrD.jpg"
     ]
@@ -183,12 +183,12 @@
     "name": "Giftun Island",
     "location": "Hurghada (Red Sea)",
     "shortInfo": "Popular island for snorkeling, clear waters, and beaches.",
-    "detailedInfo": "Giftun islands are protected areas with shallow reefs and abundant marine life; ideal for day trips and snorkeling adventures.\n\nThe island is surrounded by coral reefs rich in marine biodiversity. It\u2019s a top snorkeling and diving site in the Red Sea.\n\nDay tours include swimming, sunbathing, and exploring colorful reefs.",
-    "mainImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Giftun_Island_Egypte_-_panoramio.jpg/1200px-Giftun_Island_Egypte_-_panoramio.jpg",
+    "detailedInfo": "Giftun islands are protected areas with shallow reefs and abundant marine life; ideal for day trips and snorkeling adventures.\n\nThe island is surrounded by coral reefs rich in marine biodiversity. It’s a top snorkeling and diving site in the Red Sea.\n\nDay tours include swimming, sunbathing, and exploring colorful reefs.",
+    "mainImage": "https://i.pinimg.com/736x/37/ad/c9/37adc94518cabebc8e1d9a93b005f658.jpg",
     "galleryImages": [
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Giftun_Island_Egypte_-_panoramio_%281%29.jpg/1200px-Giftun_Island_Egypte_-_panoramio_%281%29.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Giftun_Island_Egypte_-_panoramio_%282%29.jpg/1200px-Giftun_Island_Egypte_-_panoramio_%282%29.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Giftun_Island_Egypte_-_panoramio_%283%29.jpg/1200px-Giftun_Island_Egypte_-_panoramio_%283%29.jpg"
+      "https://i.pinimg.com/1200x/19/87/f6/1987f69585ea2870aaf76efeeb81196c.jpg",
+      "https://i.pinimg.com/736x/03/b1/84/03b184a704b624017072e2ba959e2a25.jpg",
+      "https://i.pinimg.com/1200x/32/b1/69/32b169a009d281072f7e8e768fa5e143.jpg"
     ]
   },
   {
@@ -207,12 +207,12 @@
     "name": "Coptic Cairo (Hanging Church & Old Churches)",
     "location": "Cairo",
     "shortInfo": "Historic Christian quarter with ancient churches and museums.",
-    "detailedInfo": "Coptic Cairo includes the Hanging Church, the Coptic Museum, and centuries of Christian heritage concentrated in Old Cairo.\n\nThe Hanging Church, built above a Roman gate, dates back to the 3rd century. The Coptic Museum holds Christian manuscripts and icons.\n\nIt\u2019s a spiritual and historical heart of Egypt\u2019s Christian community.",
+    "detailedInfo": "Coptic Cairo includes the Hanging Church, the Coptic Museum, and centuries of Christian heritage concentrated in Old Cairo.\n\nThe Hanging Church, built above a Roman gate, dates back to the 3rd century. The Coptic Museum holds Christian manuscripts and icons.\n\nIt’s a spiritual and historical heart of Egypt’s Christian community.",
     "mainImage": "https://upload.wikimedia.org/wikipedia/commons/8/8e/Cairo%2C_Old_Cairo%2C_Hanging_Church%2C_Egypt%2C_Oct_2004_edit.jpg",
     "galleryImages": [
       "https://upload.wikimedia.org/wikipedia/commons/d/da/Image_of_Uriel_the_Archangel%2C_Cairo.jpg",
       "https://upload.wikimedia.org/wikipedia/commons/2/2b/Old_Cairo_-_Coptic_Church_%284332671695%29.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/The_Hanging_Church%2C_Old_Cairo.jpg/1200px-The_Hanging_Church%2C_Old_Cairo.jpg"
+      "https://i.pinimg.com/1200x/17/50/68/175068bad84e76a3fb739eb03d51c81d.jpg"
     ]
   },
   {
@@ -220,11 +220,11 @@
     "location": "Edfu, Aswan",
     "shortInfo": "One of the best-preserved ancient temples in Egypt.",
     "detailedInfo": "Dedicated to the falcon god Horus, the Temple of Edfu is a remarkable example of Ptolemaic architecture and features detailed hieroglyphic inscriptions.\n\nConstructed between 237 and 57 BC, the temple celebrates the divine battle between Horus and Set. Its inscriptions provide valuable insight into Ptolemaic religion.\n\nIt remains one of the most intact temples in all of Egypt.",
-    "mainImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Temple_of_Edfu%2C_Ceiling%2C_Egypt.jpg/1200px-Temple_of_Edfu%2C_Ceiling%2C_Egypt.jpg",
+    "mainImage": "https://i.pinimg.com/1200x/93/2b/ed/932bed5ed834dbdc6862bff263988dc3.jpg",
     "galleryImages": [
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Temple_of_Edfu%2C_Columns%2C_Egypt.jpg/1200px-Temple_of_Edfu%2C_Columns%2C_Egypt.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Temple_of_Edfu%2C_Corridors%2C_Egypt.jpg/1200px-Temple_of_Edfu%2C_Corridors%2C_Egypt.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Temple_of_Edfu%2C_Egypt.jpg/1200px-Temple_of_Edfu%2C_Egypt.jpg"
+      "https://i.pinimg.com/736x/e5/40/ad/e540adbf7bb86b91ebba1797e12af0c7.jpg",
+      "https://i.pinimg.com/736x/9f/96/d3/9f96d37c75c565f792125dccc3b655fd.jpg",
+      "https://i.pinimg.com/1200x/b4/d7/40/b4d7403cf53b9b6810b24cfd0d756cf8.jpg"
     ]
   },
   {
@@ -232,33 +232,33 @@
     "location": "South Sinai",
     "shortInfo": "Ancient Christian monastery at the foot of Mount Sinai.",
     "detailedInfo": "Built in the 6th century, Saint Catherine's Monastery is one of the oldest working Christian monasteries and a UNESCO World Heritage Site.\n\nLocated at the foot of Mount Sinai, it houses ancient manuscripts and the Burning Bush. The monastery is sacred to Christianity, Islam, and Judaism alike.\n\nIts remote desert setting makes it a place of peace and reflection.",
-    "mainImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Qesm_Sharm_Ash_Sheikh%2C_South_Sinai_Governorate%2C_Egypt_-_panoramio_%2811%29.jpg/1200px-Qesm_Sharm_Ash_Sheikh%2C_South_Sinai_Governorate%2C_Egypt_-_panoramio_%2811%29.jpg",
+    "mainImage": "https://i.pinimg.com/736x/c8/b4/91/c8b4911fde7bcf465ab203d6d306ce0e.jpg",
     "galleryImages": [
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Qesm_Sharm_Ash_Sheikh%2C_South_Sinai_Governorate%2C_Egypt_-_panoramio_%2812%29.jpg/1200px-Qesm_Sharm_Ash_Sheikh%2C_South_Sinai_Governorate%2C_Egypt_-_panoramio_%2812%29.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Qesm_Sharm_Ash_Sheikh%2C_South_Sinai_Governorate%2C_Egypt_-_panoramio_%285%29.jpg/1200px-Qesm_Sharm_Ash_Sheikh%2C_South_Sinai_Governorate%2C_Egypt_-_panoramio_%285%29.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Saint_Catherine_Monastery_%2C_Saint_Catherine_%2C_south_Sinai%2C_Egypt.jpg/1200px-Saint_Catherine_Monastery_%2C_Saint_Catherine_%2C_south_Sinai%2C_Egypt.jpg"
+      "https://i.pinimg.com/1200x/fd/8c/40/fd8c40ca1006463d6e7f7fdb9df521fb.jpg",
+      "https://i.pinimg.com/736x/41/46/32/41463219d6846b282c43cda6f6dbee25.jpg",
+      "https://i.pinimg.com/736x/79/ce/5a/79ce5ab646e23b21fac415d1b13a50db.jpg"
     ]
   },
   {
     "name": "Ras El Bar",
     "location": "Damietta",
     "shortInfo": "Coastal resort town where the Nile meets the Mediterranean Sea.",
-    "detailedInfo": "Ras El Bar is famous for its unique location at the Nile Delta\u2019s tip, offering sandy beaches, sea views, and local seafood.\n\nThe city was one of Egypt\u2019s first modern resorts, popular since the early 1900s. It\u2019s famous for its summer villas and fresh seafood.\n\nVisitors can watch the meeting point of the Nile and the Mediterranean Sea.",
-    "mainImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/2013-04-01_14.11.24%D9%85%D8%B5%D9%8A%D9%81_%D8%B1%D8%A3%D8%B3_%D8%A7%D9%84%D8%A8%D8%B1.jpg/1200px-2013-04-01_14.11.24%D9%85%D8%B5%D9%8A%D9%81_%D8%B1%D8%A3%D8%B3_%D8%A7%D9%84%D8%A8%D8%B1.jpg",
+    "detailedInfo": "Ras El Bar is famous for its unique location at the Nile Delta’s tip, offering sandy beaches, sea views, and local seafood.\n\nThe city was one of Egypt’s first modern resorts, popular since the early 1900s. It’s famous for its summer villas and fresh seafood.\n\nVisitors can watch the meeting point of the Nile and the Mediterranean Sea.",
+    "mainImage": "https://i.pinimg.com/1200x/9d/aa/21/9daa21cdf961d1f64c5694b8eeae449c.jpg",
     "galleryImages": [
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Ras_El-Bar-2.jpg/1200px-Ras_El-Bar-2.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Ras_El-Bar-3.jpg/1200px-Ras_El-Bar-3.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Ras_El-Bar-4.jpg/1200px-Ras_El-Bar-4.jpg"
+      "https://i.pinimg.com/1200x/11/9d/99/119d9928c6267f553902baacb65760cb.jpg",
+      "https://i.pinimg.com/736x/3e/09/d7/3e09d7be45356739094500c27047a548.jpg",
+      "https://i.pinimg.com/1200x/27/b0/2f/27b02ff5eaa7adcd96bd648c6e42b6f9.jpg"
     ]
   },
   {
     "name": "Qaitbay Citadel",
     "location": "Alexandria",
     "shortInfo": "15th-century fortress built on the site of the ancient Lighthouse of Alexandria.",
-    "detailedInfo": "The Qaitbay Citadel stands as a historical fort protecting Alexandria\u2019s harbor and offering beautiful views of the Mediterranean.\n\nBuilt by Sultan Al-Ashraf Qaitbay in 1477 AD using stones from the fallen Lighthouse of Alexandria. It protected the city against Ottoman invasions.\n\nToday, it stands as a landmark of Alexandria\u2019s maritime heritage.",
-    "mainImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Alexandria_Egypt_%28235108463%29.jpeg/1200px-Alexandria_Egypt_%28235108463%29.jpeg",
+    "detailedInfo": "The Qaitbay Citadel stands as a historical fort protecting Alexandria’s harbor and offering beautiful views of the Mediterranean.\n\nBuilt by Sultan Al-Ashraf Qaitbay in 1477 AD using stones from the fallen Lighthouse of Alexandria. It protected the city against Ottoman invasions.\n\nToday, it stands as a landmark of Alexandria’s maritime heritage.",
+    "mainImage": "https://www.egypttoursportal.com/images/2025/06/Role-of-Qaitbay-Egypt-Tours-Portal.jpg",
     "galleryImages": [
-      "https://www.egypttoursportal.com/images/2025/06/Role-of-Qaitbay-Egypt-Tours-Portal.jpg",
+      "https://i.pinimg.com/1200x/32/6d/7e/326d7e2558ac908e22046a5f0fc9c549.jpg",
       "https://images.unsplash.com/photo-1738511574956-9529fd9f84f1?ixid=M3w4MjEwMTd8MHwxfHNlYXJjaHwzfHxRYWl0YmF5JTIwQ2l0YWRlbCUyMEFsZXhhbmRyaWF8ZW58MHwwfHx8MTc2MTMxODE5N3ww&ixlib=rb-4.1.0&auto=format&w=1200&h=800&fit=crop&q=80&fm=jpg",
       "https://images.pexels.com/photos/9824455/pexels-photo-9824455.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
     ]
@@ -267,7 +267,7 @@
     "name": "Philae Temple",
     "location": "Aswan",
     "shortInfo": "Ancient temple dedicated to the goddess Isis, relocated after High Dam construction.",
-    "detailedInfo": "Philae Temple is considered one of the most beautiful temples in Egypt.\n\nOriginally located on Philae Island, the temple was threatened by rising waters after the construction of the Aswan High Dam.\n\nIn a historic rescue mission led by UNESCO, the entire complex was dismantled and moved to Agilkia Island block by block.\n\nThe temple is dedicated to Isis, the goddess of magic and motherhood, and features impressive pylons, sanctuaries, and detailed reliefs that depict ancient myths and royal rituals.\n\nToday, the island setting and evening Sound & Light show make Philae one of Aswan\u2019s top attractions.",
+    "detailedInfo": "Philae Temple is considered one of the most beautiful temples in Egypt.\n\nOriginally located on Philae Island, the temple was threatened by rising waters after the construction of the Aswan High Dam.\n\nIn a historic rescue mission led by UNESCO, the entire complex was dismantled and moved to Agilkia Island block by block.\n\nThe temple is dedicated to Isis, the goddess of magic and motherhood, and features impressive pylons, sanctuaries, and detailed reliefs that depict ancient myths and royal rituals.\n\nToday, the island setting and evening Sound & Light show make Philae one of Aswan’s top attractions.",
     "mainImage": "https://i.pinimg.com/1200x/5e/b3/b0/5eb3b0b13bb69e7547ecda6bfc506950.jpg",
     "galleryImages": [
       "https://i.pinimg.com/1200x/1f/1e/80/1f1e80a8c3d561346588d15c33ab2d1b.jpg",
@@ -291,7 +291,7 @@
     "name": "Dendera Temple",
     "location": "Qena",
     "shortInfo": "Well-preserved temple complex dedicated to Hathor.",
-    "detailedInfo": "The Dendera Temple complex is one of Egypt\u2019s best-preserved ancient sites.\n\nIts main structure, the Temple of Hathor, features vibrant colors, decorated ceilings, and massive columns.\n\nThe temple is famous for the Dendera Zodiac, an ancient astronomical carving.\n\nIt also contains underground crypts, rooftop chapels, and reliefs depicting Cleopatra VII and her son Caesarion.\n\nThe vibrant blue ceiling paintings make it one of the most visually stunning temples in Egypt.",
+    "detailedInfo": "The Dendera Temple complex is one of Egypt’s best-preserved ancient sites.\n\nIts main structure, the Temple of Hathor, features vibrant colors, decorated ceilings, and massive columns.\n\nThe temple is famous for the Dendera Zodiac, an ancient astronomical carving.\n\nIt also contains underground crypts, rooftop chapels, and reliefs depicting Cleopatra VII and her son Caesarion.\n\nThe vibrant blue ceiling paintings make it one of the most visually stunning temples in Egypt.",
     "mainImage": "https://i.pinimg.com/736x/d1/fc/51/d1fc51f1a4abef38d644a71e2ff71ec4.jpg",
     "galleryImages": [
       "https://i.pinimg.com/1200x/6f/02/76/6f02765561a696e8a9a1ca52917cfdbc.jpg",
@@ -303,7 +303,7 @@
     "name": "Saqqara Step Pyramid",
     "location": "Giza",
     "shortInfo": "Oldest pyramid in Egypt, built for King Djoser.",
-    "detailedInfo": "The Step Pyramid of Djoser is the oldest large-scale stone structure in the world.\n\nDesigned by the architect Imhotep, it marked a revolutionary leap in ancient Egyptian architecture.\n\nIts step design represents the early evolution of pyramid building.\n\nSaqqara also includes tombs, temples, and ancient burial chambers with colorful reliefs.\n\nThe site's vast landscape makes it a key stop for understanding Egypt\u2019s early dynasties.",
+    "detailedInfo": "The Step Pyramid of Djoser is the oldest large-scale stone structure in the world.\n\nDesigned by the architect Imhotep, it marked a revolutionary leap in ancient Egyptian architecture.\n\nIts step design represents the early evolution of pyramid building.\n\nSaqqara also includes tombs, temples, and ancient burial chambers with colorful reliefs.\n\nThe site's vast landscape makes it a key stop for understanding Egypt’s early dynasties.",
     "mainImage": "https://i.pinimg.com/736x/1d/8c/45/1d8c4538bedaebae4470d55357098fd1.jpg",
     "galleryImages": [
       "https://i.pinimg.com/1200x/06/60/a0/0660a01003c47b3eed332a6e65d0db96.jpg",
@@ -315,9 +315,9 @@
     "name": "Dahshur (Bent & Red Pyramids)",
     "location": "Giza",
     "shortInfo": "Two unique pyramids showing evolution of pyramid building.",
-    "detailedInfo": "Dahshur is home to two remarkable pyramids built by Pharaoh Sneferu.\n\nThe Bent Pyramid is famous for its unusual change in angle halfway up, revealing early architectural experimentation.\n\nThe Red Pyramid is considered the world\u2019s first true smooth-sided pyramid.\n\nBoth structures demonstrate the evolution of pyramid design before the Great Pyramid of Giza.\n\nDahshur is quieter and less crowded, offering an authentic desert experience.",
+    "detailedInfo": "Dahshur is home to two remarkable pyramids built by Pharaoh Sneferu.\n\nThe Bent Pyramid is famous for its unusual change in angle halfway up, revealing early architectural experimentation.\n\nThe Red Pyramid is considered the world’s first true smooth-sided pyramid.\n\nBoth structures demonstrate the evolution of pyramid design before the Great Pyramid of Giza.\n\nDahshur is quieter and less crowded, offering an authentic desert experience.",
     "mainImage": "https://i.pinimg.com/1200x/9b/2d/a4/9b2da47eab4b82f10442881fd54f2f16.jpg",
-      "galleryImages": [
+    "galleryImages": [
       "https://images.squarespace-cdn.com/content/v1/596b2969d2b85786e6892853/40bacbe4-1c12-4c2c-b834-98eacad27618/The+Red+Pyramid+from+the+Bent+Pyramid+in+Dahshur?format=2500w",
       "https://images.squarespace-cdn.com/content/v1/596b2969d2b85786e6892853/1edbf05e-00be-4698-8215-3d4fe1c6f778/Visiting+the+incredible+pyramids+in+Dahshur%2C+Egypt?format=2500w",
       "https://i.pinimg.com/736x/fd/e5/ff/fde5ff17d019d30e8265ed7d8814717e.jpg"
@@ -339,7 +339,7 @@
     "name": "Baron Empain Palace",
     "location": "Heliopolis, Cairo",
     "shortInfo": "Unique Indian-inspired palace built in the early 1900s.",
-    "detailedInfo": "The Baron Empain Palace is one of Cairo\u2019s most unusual architectural landmarks.\n\nBuilt by Belgian industrialist \u00c9douard Empain, the palace\u2019s design was inspired by Hindu temples and Cambodian architecture.\n\nIts rotating tower was originally designed to turn for sunlight.\n\nAfter years of abandonment, the palace was restored and reopened, showcasing exhibitions about Heliopolis and the life of Baron Empain.\n\nThe building is also surrounded by popular legends and supernatural stories.",
+    "detailedInfo": "The Baron Empain Palace is one of Cairo’s most unusual architectural landmarks.\n\nBuilt by Belgian industrialist Édouard Empain, the palace’s design was inspired by Hindu temples and Cambodian architecture.\n\nIts rotating tower was originally designed to turn for sunlight.\n\nAfter years of abandonment, the palace was restored and reopened, showcasing exhibitions about Heliopolis and the life of Baron Empain.\n\nThe building is also surrounded by popular legends and supernatural stories.",
     "mainImage": "https://i.pinimg.com/1200x/28/8a/89/288a896a88619c911938335c30ed8fef.jpg",
     "galleryImages": [
       "https://i.pinimg.com/1200x/83/96/d8/8396d8e56ff5ca11b9897f7416b72610.jpg",
@@ -348,10 +348,10 @@
     ]
   },
   {
-    "name": "Fayoum \u2013 Wadi El Hitan (Valley of the Whales)",
+    "name": "Fayoum – Wadi El Hitan (Valley of the Whales)",
     "location": "Fayoum",
     "shortInfo": "UNESCO site with prehistoric whale fossils.",
-    "detailedInfo": "Wadi El Hitan is a UNESCO World Heritage Site famous for its prehistoric whale fossils.\n\nThe fossils belong to early whales that still had legs, documenting a critical stage in evolution.\n\nThe site includes open-air walking trails and a modern visitor center.\n\nIts desert scenery and scientific importance make it one of Egypt\u2019s most unique attractions.",
+    "detailedInfo": "Wadi El Hitan is a UNESCO World Heritage Site famous for its prehistoric whale fossils.\n\nThe fossils belong to early whales that still had legs, documenting a critical stage in evolution.\n\nThe site includes open-air walking trails and a modern visitor center.\n\nIts desert scenery and scientific importance make it one of Egypt’s most unique attractions.",
     "mainImage": "https://i.pinimg.com/1200x/83/61/ba/8361ba10920479474a88f3899e1ae42b.jpg",
     "galleryImages": [
       "https://i.pinimg.com/736x/ea/06/39/ea0639c40321010b5488c4724aae9f38.jpg",
@@ -375,7 +375,7 @@
     "name": "Al-Alamein War Museum",
     "location": "El-Alamein",
     "shortInfo": "Museum commemorating WWII battles in North Africa.",
-    "detailedInfo": "The Al-Alamein War Museum recounts the major battles of World War II that took place along Egypt\u2019s northern coast.\n\nIt includes uniforms, weapons, vehicles, letters, and military maps.\n\nOutdoor exhibits feature tanks, artillery, and remnants of war.\n\nThe museum honors soldiers from various nations who fought in the desert campaigns.",
+    "detailedInfo": "The Al-Alamein War Museum recounts the major battles of World War II that took place along Egypt’s northern coast.\n\nIt includes uniforms, weapons, vehicles, letters, and military maps.\n\nOutdoor exhibits feature tanks, artillery, and remnants of war.\n\nThe museum honors soldiers from various nations who fought in the desert campaigns.",
     "mainImage": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/26/89/36/de/museum-entrance.jpg?w=1400&h=-1&s=1",
     "galleryImages": [
       "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/31/ad/a0/f5/caption.jpg?w=1400&h=-1&s=1",
@@ -399,7 +399,7 @@
     "name": "Abdeen Palace",
     "location": "Cairo",
     "shortInfo": "Royal palace from the Muhammad Ali dynasty.",
-    "detailedInfo": "Abdeen Palace served as the official residence of Egypt\u2019s royal family.\n\nIt contains lavish halls, military museums, and collections of royal artifacts.",
+    "detailedInfo": "Abdeen Palace served as the official residence of Egypt’s royal family.\n\nIt contains lavish halls, military museums, and collections of royal artifacts.",
     "mainImage": "https://i.pinimg.com/1200x/09/fb/94/09fb94839c94f8bc7ae51101501f8b49.jpg",
     "galleryImages": [
       "https://i.pinimg.com/1200x/98/fc/91/98fc910348c94fdfd834efa51f7d4fe0.jpg",

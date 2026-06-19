@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:travel_hub/constant.dart';
 import 'package:travel_hub/core/utils/app_router.dart';
+import 'package:travel_hub/core/utils/currency_formatter.dart';
 import 'package:travel_hub/navigation/hotels/models/hotels_model.dart';
 import 'package:travel_hub/navigation/hotels/presentation/widgets/custom_button.dart';
 import 'package:travel_hub/navigation/hotels/presentation/widgets/hotel_list.dart';
@@ -152,7 +153,7 @@ class HotelsScreenDetails extends StatelessWidget {
                         Expanded(
                           child: Center(
                             child: Text(
-                              "${hotels.pricePerNight} ${"EGP".tr()}",
+                              CurrencyFormatter.format(hotels.pricePerNight),
                               style: TextStyle(color: kWhite, fontSize: 16.sp),
                             ),
                           ),
@@ -164,7 +165,10 @@ class HotelsScreenDetails extends StatelessWidget {
                       buttonColor: kWhite,
                       textColor: kBackgroundColor,
                       onPressed: () {
-                        GoRouter.of(context).push(AppRouter.kBookView);
+                        GoRouter.of(context).push(
+                          AppRouter.kBookView,
+                          extra: hotels, // passes hotel data to BookScreen
+                        );
                       },
                     ),
                   ],

@@ -52,7 +52,7 @@ class TravelWelcomeScreen extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(width * 0.05),
                   decoration: BoxDecoration(
-                    color: kWhite.withOpacity(0.15),
+                    color: kWhite.withValues(alpha: 0.15),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(

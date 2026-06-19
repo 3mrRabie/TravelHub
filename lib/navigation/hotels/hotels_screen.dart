@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:travel_hub/constant.dart';
-import 'package:travel_hub/core/custom_app_bar.dart';
 import 'package:travel_hub/core/utils/app_router.dart';
 import 'package:travel_hub/navigation/hotels/data/cubit/hotels_cubit.dart';
 import 'package:travel_hub/navigation/hotels/data/cubit/hotels_state.dart';
@@ -35,7 +33,6 @@ class _HotelsScreenState extends State<HotelsScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final textColor = theme.textTheme.bodyMedium?.color;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,

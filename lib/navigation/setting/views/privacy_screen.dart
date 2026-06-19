@@ -21,7 +21,7 @@ class PrivacyScreen extends StatelessWidget {
     final theme   = Theme.of(context);
     final text    = theme.textTheme.bodyLarge?.color  ?? Colors.black87;
     final subText = (theme.textTheme.bodyMedium?.color ?? Colors.black54)
-        .withOpacity(0.7);
+        .withValues(alpha: 0.7);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,

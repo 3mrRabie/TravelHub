@@ -112,10 +112,27 @@ class _LandMarkScreenState extends State<LandMarkScreen> {
                                                   ),
                                               child: CachedNetworkImage(
                                                 placeholder: (context, url) =>
-                                                    CircularProgressIndicator(),
+                                                    Container(
+                                                      height: 180.h,
+                                                      width: double.infinity,
+                                                      color: Colors.grey[200],
+                                                      child: const Center(child: CircularProgressIndicator()),
+                                                    ),
                                                 errorWidget:
                                                     (context, url, error) =>
-                                                        Icon(Icons.error),
+                                                        Container(
+                                                          height: 180.h,
+                                                          width: double.infinity,
+                                                          color: Colors.grey[200],
+                                                          child: Column(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            children: [
+                                                              Icon(Icons.broken_image_outlined, size: 40, color: Colors.grey[500]),
+                                                              const SizedBox(height: 8),
+                                                              Text('Image unavailable', style: TextStyle(color: Colors.grey[500], fontSize: 12)),
+                                                            ],
+                                                          ),
+                                                        ),
                                                 height: 180.h,
                                                 width: double.infinity,
                                                 fit: BoxFit.cover,

@@ -45,5 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Google Sign-In: reversed client ID for OAuth redirect URL scheme.
+	     TODO: Add iOS app to Firebase project travelhub-5633c, download
+	     GoogleService-Info.plist, then set CFBundleURLSchemes to the
+	     reversed REVERSED_CLIENT_ID value from that file.
+	     Without this, Google Sign-In cannot redirect back to the app on iOS. -->
+	<!-- CFBundleURLTypes key intentionally omitted until iOS is configured -->
 </dict>
 </plist>

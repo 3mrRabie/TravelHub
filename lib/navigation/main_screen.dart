@@ -23,6 +23,12 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Reading context.locale registers this State as a dependent of
+    // EasyLocalization's InheritedWidget. This guarantees a rebuild—and
+    // therefore fresh .tr() label strings—whenever the user switches languages,
+    // even while staying on the MainScreen (without navigating away).
+    context.locale;
+
     final size = MediaQuery.of(context).size;
     final isWide = size.width >= 600;
 

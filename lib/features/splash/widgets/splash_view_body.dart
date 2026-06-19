@@ -88,7 +88,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
             Text(
               'Discover the world'.tr(),
               style: TextStyle(
-                color: kWhite.withOpacity(0.9),
+                color: kWhite.withValues(alpha: 0.9),
                 fontSize: width * 0.045,
               ),
             ),
@@ -99,7 +99,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
                 return Container(
                   width: width * 0.35 * _animation.value,
                   height: 2,
-                  color: kWhite.withOpacity(0.9),
+                  color: kWhite.withValues(alpha: 0.9),
                 );
               },
             ),

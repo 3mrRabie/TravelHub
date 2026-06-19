@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:travel_hub/features/auth/login/services/login_with_google.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -173,7 +173,7 @@ class SettingsList extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isSelected
-              ? Colors.blueAccent.withOpacity(0.15)
+              ? Colors.blueAccent.withValues(alpha: 0.15)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(12.r),
         ),
@@ -183,7 +183,7 @@ class SettingsList extends StatelessWidget {
               isSelected ? Icons.check_circle : Icons.circle_outlined,
               color: isSelected
                   ? Colors.blueAccent
-                  : textColor.withOpacity(0.6),
+                  : textColor.withValues(alpha: 0.6),
               size: 20.sp,
             ),
             SizedBox(width: 10.w),
@@ -232,10 +232,18 @@ class SettingsList extends StatelessWidget {
 
         if (confirm != true) return;
 
+        // Clear all locally-persisted session data.
         final prefs = await SharedPreferences.getInstance();
         await prefs.remove('userName');
         await prefs.remove('userEmail');
-        await FirebaseAuth.instance.signOut();
+        await prefs.remove('userUID');
+        await prefs.remove('profileImage');
+
+        // Sign out from BOTH Firebase and Google Sign-In.
+        // Signing out from Google Sign-In is mandatory so that the next
+        // signIn() call shows the account chooser instead of silently
+        // re-authenticating the previously used Google account.
+        await signOutFromGoogle();
 
         if (context.mounted) {
           GoRouter.of(context).go(AppRouter.kLoginView);

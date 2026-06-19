@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +28,7 @@ class _RegisterFormState extends State<RegisterForm> {
   final GlobalKey<FormState> key = GlobalKey<FormState>();
 
   bool loading = false;
+  bool isGoogleLoading = false;
 
   @override
   void dispose() {
@@ -46,7 +48,7 @@ class _RegisterFormState extends State<RegisterForm> {
   Future<void> signUp(BuildContext context) async {
     if (loading) return;
 
-    // Capture context-dependent objects before any await gap
+    // Capture context-dependent objects before any await gap.
     final messenger = ScaffoldMessenger.of(context);
     final router = GoRouter.of(context);
 
@@ -75,7 +77,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
       if (!mounted) return;
       messenger.showSnackBar(
-        SnackBar(content: Text("Account created successfully!".tr())),
+        SnackBar(content: Text('Account created successfully!'.tr())),
       );
       router.pushReplacement(AppRouter.kLoginView);
     } on FirebaseAuthException catch (e) {
@@ -101,6 +103,42 @@ class _RegisterFormState extends State<RegisterForm> {
     }
   }
 
+  Future<void> _signInWithGoogle() async {
+    if (isGoogleLoading) return; // Prevent duplicate requests.
+
+    // Capture context-dependent objects before the first await.
+    final messenger = ScaffoldMessenger.of(context);
+    final router = GoRouter.of(context);
+
+    setState(() => isGoogleLoading = true);
+    try {
+      final user = await signInWithGoogle();
+      if (!mounted) return;
+
+      if (user != null) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('userEmail', user.email ?? '');
+        await prefs.setString('userName', user.displayName ?? 'User');
+        await prefs.setString('userUID', user.uid);
+        await prefs.setString('profileImage', user.photoURL ?? '');
+        if (mounted) router.pushReplacement(AppRouter.kNavigationView);
+      }
+      // user == null means the user cancelled – no snackbar needed.
+    } on GoogleSignInException catch (e) {
+      if (mounted) {
+        messenger.showSnackBar(SnackBar(content: Text(e.message)));
+      }
+    } catch (e) {
+      if (mounted) {
+        messenger.showSnackBar(
+          SnackBar(content: Text('google_signin_failed'.tr())),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => isGoogleLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -123,25 +161,25 @@ class _RegisterFormState extends State<RegisterForm> {
             children: [
               CustomTextField(
                 icon: Icons.person,
-                label: "Full Name".tr(),
+                label: 'Full Name'.tr(),
                 controller: name,
                 keyboard: TextInputType.name,
                 validator: (value) => value == null || value.isEmpty
-                    ? "Please enter your full name".tr()
+                    ? 'Please enter your full name'.tr()
                     : null,
               ),
               SizedBox(height: height * 0.02),
               CustomTextField(
                 icon: Icons.email_outlined,
-                label: "Email Address".tr(),
+                label: 'Email Address'.tr(),
                 controller: email,
                 keyboard: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter your email".tr();
+                    return 'Please enter your email'.tr();
                   }
-                  if (!value.contains("@")) {
-                    return "Please enter a valid email".tr();
+                  if (!value.contains('@')) {
+                    return 'Please enter a valid email'.tr();
                   }
                   return null;
                 },
@@ -149,12 +187,12 @@ class _RegisterFormState extends State<RegisterForm> {
               SizedBox(height: height * 0.02),
               CustomTextField(
                 icon: Icons.phone_android_outlined,
-                label: "Phone".tr(),
+                label: 'Phone'.tr(),
                 controller: phone,
                 keyboard: TextInputType.phone,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter your phone number".tr();
+                    return 'Please enter your phone number'.tr();
                   }
                   if (!RegExp(r'^01[0-9]{9}$').hasMatch(value)) {
                     return 'Please enter a valid Egyptian phone number'.tr();
@@ -165,16 +203,16 @@ class _RegisterFormState extends State<RegisterForm> {
               SizedBox(height: height * 0.02),
               CustomTextField(
                 icon: Icons.lock_outline,
-                label: "Password".tr(),
+                label: 'Password'.tr(),
                 obscureText: true,
                 suffixIcon: Icons.visibility_off_outlined,
                 controller: password,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter your password".tr();
+                    return 'Please enter your password'.tr();
                   }
                   if (value.length < 6) {
-                    return "Password must be at least 6 characters".tr();
+                    return 'Password must be at least 6 characters'.tr();
                   }
                   return null;
                 },
@@ -182,13 +220,13 @@ class _RegisterFormState extends State<RegisterForm> {
               SizedBox(height: height * 0.02),
               CustomTextField(
                 icon: Icons.lock_outline,
-                label: "Confirm Password".tr(),
+                label: 'Confirm Password'.tr(),
                 obscureText: true,
                 suffixIcon: Icons.visibility_off_outlined,
                 controller: confirmPassword,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Please confirm your password".tr();
+                    return 'Please confirm your password'.tr();
                   }
                   if (value != password.text) {
                     return "Passwords don't match".tr();
@@ -225,7 +263,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           ),
                         )
                       : Text(
-                          "Create Account".tr(),
+                          'Create Account'.tr(),
                           style: TextStyle(
                             fontSize: width * 0.045,
                             fontWeight: FontWeight.w600,
@@ -235,7 +273,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
               ),
               SizedBox(height: height * 0.02),
-              Text("or".tr(), style: TextStyle(color: kBlack)),
+              Text('or'.tr(), style: const TextStyle(color: kBlack)),
               SizedBox(height: height * 0.02),
 
               SizedBox(
@@ -243,24 +281,8 @@ class _RegisterFormState extends State<RegisterForm> {
                 height: 50,
                 child: _GoogleSignInButton(
                   borderRadius: width * 0.03,
-                  onPressed: () async {
-                    final router = GoRouter.of(context);
-                    final messenger = ScaffoldMessenger.of(context);
-                    setState(() => loading = true);
-                    final user = await signInWithGoogle();
-                    if (mounted) setState(() => loading = false);
-                    if (user != null) {
-                      final prefs = await SharedPreferences.getInstance();
-                      await prefs.setString('userEmail', user.email ?? '');
-                      await prefs.setString('userName', user.displayName ?? 'User');
-                      await prefs.setString('profileImage', user.photoURL ?? '');
-                      if (mounted) router.pushReplacement(AppRouter.kNavigationView);
-                    } else {
-                      messenger.showSnackBar(
-                        SnackBar(content: Text("google_signin_failed".tr())),
-                      );
-                    }
-                  },
+                  isLoading: isGoogleLoading,
+                  onPressed: isGoogleLoading ? null : _signInWithGoogle,
                 ),
               ),
               SizedBox(height: height * 0.015),
@@ -274,92 +296,71 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 }
 
-/// A drop-in replacement for SignInButton(Buttons.Google) that does not depend
-/// on flutter_signin_button or font_awesome_flutter.
+// ─── Google Sign-In Button ────────────────────────────────────────────────────
+
+/// Google-branded sign-in button following the official branding guidelines:
+/// https://developers.google.com/identity/branding-guidelines
+///
+/// Uses the official Google "G" logo SVG asset (assets/icons/google_logo.svg).
+/// The SVG contains the exact path data published by Google — NOT generated
+/// or approximated in code.
 class _GoogleSignInButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final double borderRadius;
+  final bool isLoading;
 
   const _GoogleSignInButton({
-    super.key,
     required this.onPressed,
     this.borderRadius = 8,
+    this.isLoading = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        backgroundColor: Colors.white,
-        side: const BorderSide(color: Color(0xFFDADADA)),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const _GoogleLogo(size: 22),
-          const SizedBox(width: 12),
-          const Text(
-            'Sign in with Google',
-            style: TextStyle(
-              color: Color(0xFF3C4043),
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.2,
-            ),
+    return Semantics(
+      label: 'Sign in with Google',
+      button: true,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          backgroundColor: Colors.white,
+          disabledBackgroundColor: Colors.white,
+          side: const BorderSide(color: Color(0xFFDADADA)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
           ),
-        ],
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 12),
+        ),
+        child: isLoading
+            ? const SizedBox(
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(strokeWidth: 2.5),
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Official Google "G" logo – loaded from the SVG asset.
+                  // Source: https://developers.google.com/identity/branding-guidelines
+                  SvgPicture.asset(
+                    'assets/icons/google_logo.svg',
+                    width: 22,
+                    height: 22,
+                    semanticsLabel: 'Google logo',
+                  ),
+                  const SizedBox(width: 12),
+                  const Text(
+                    'Sign in with Google',
+                    style: TextStyle(
+                      color: Color(0xFF3C4043),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                ],
+              ),
       ),
     );
   }
-}
-
-class _GoogleLogo extends StatelessWidget {
-  final double size;
-  const _GoogleLogo({super.key, this.size = 24});
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(size, size),
-      painter: _GoogleLogoPainter(),
-    );
-  }
-}
-
-class _GoogleLogoPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final cx = size.width / 2;
-    final cy = size.height / 2;
-    final r = size.width / 2;
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = size.width * 0.22;
-
-    paint.color = const Color(0xFF4285F4);
-    canvas.drawArc(Rect.fromCircle(center: Offset(cx, cy), radius: r * 0.78),
-        -0.52, 1.57, false, paint);
-    paint.color = const Color(0xFFEA4335);
-    canvas.drawArc(Rect.fromCircle(center: Offset(cx, cy), radius: r * 0.78),
-        -2.09, 1.57, false, paint);
-    paint.color = const Color(0xFFFBBC05);
-    canvas.drawArc(Rect.fromCircle(center: Offset(cx, cy), radius: r * 0.78),
-        2.62, 1.05, false, paint);
-    paint.color = const Color(0xFF34A853);
-    canvas.drawArc(Rect.fromCircle(center: Offset(cx, cy), radius: r * 0.78),
-        1.67, 0.95, false, paint);
-
-    paint
-      ..color = const Color(0xFF4285F4)
-      ..strokeWidth = size.width * 0.20;
-    canvas.drawLine(Offset(cx, cy), Offset(cx + r * 0.78, cy), paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

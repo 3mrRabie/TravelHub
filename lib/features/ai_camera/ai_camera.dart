@@ -67,10 +67,11 @@ class _AiWikiPageState extends State<AiCamera> {
         return;
       }
 
+      final pred = prediction!; // non-nullable local for closure capture
       setState(() {
-        _title = prediction!['label'] ?? "Unknown";
-        _summaryEn = prediction!['wiki_english'] ?? "";
-        _summaryAr = prediction!['wiki_arabic'] ?? "";
+        _title = pred['label'] ?? "Unknown";
+        _summaryEn = pred['wiki_english'] ?? "";
+        _summaryAr = pred['wiki_arabic'] ?? "";
       });
 
       if (_summaryAr!.isEmpty) {

@@ -8,7 +8,6 @@ import 'package:travel_hub/constant.dart';
 import 'package:travel_hub/core/utils/app_router.dart';
 import 'package:travel_hub/navigation/favorites/landmarks_favorites/data/cubit/landmarks_favorites_cubit.dart';
 import 'package:travel_hub/navigation/favorites/landmarks_favorites/data/cubit/landmarks_favorites_state.dart';
-import 'package:travel_hub/navigation/land_mark/models/land_mark_model.dart';
 
 class LandMarkFavoritesScreen extends StatelessWidget {
   const LandMarkFavoritesScreen({super.key});

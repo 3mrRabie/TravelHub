@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
+    <!-- Allow cleartext only for local dev/ngrok tunnels -->
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">ngrok-free.dev</domain>
+        <domain includeSubdomains="true">ngrok.io</domain>
     </domain-config>
-    
-    <base-config>
+
+    <!-- All other traffic uses HTTPS and trusts the device's built-in CAs.
+         This covers Unsplash, Pexels, Booking.com, Pinterest, Wikipedia,
+         TripAdvisor, Squarespace, Cloudfront, and all other image hosts. -->
+    <base-config cleartextTrafficPermitted="false">
         <trust-anchors>
             <certificates src="system" />
+            <certificates src="user" />
         </trust-anchors>
     </base-config>
-
 </network-security-config>

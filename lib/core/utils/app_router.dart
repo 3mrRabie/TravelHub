@@ -209,7 +209,13 @@ abstract class AppRouter {
         },
       ),
 
-      GoRoute(path: kBookView, builder: (context, state) => const BookScreen()),
+      GoRoute(
+        path: kBookView,
+        builder: (context, state) {
+          final hotel = state.extra as Hotels?;
+          return BookScreen(hotel: hotel);
+        },
+      ),
        GoRoute(
         path: kHotelsFavoritesView,
         builder: (context, state) => FavoritesScreen(),

@@ -19,7 +19,7 @@ class AiPhotoCard extends StatelessWidget {
         //   dark  → faint white overlay  (slightly elevated surface look)
         //   light → original faint blue-white tint
         color: theme.brightness == Brightness.dark
-            ? Colors.white.withOpacity(0.08)
+            ? Colors.white.withValues(alpha: 0.08)
             : const Color(0xfff7f8ff),
         borderRadius: BorderRadius.circular(16),
       ),
@@ -43,7 +43,7 @@ class AiPhotoCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 13,
               // Colors.black54 is invisible on dark backgrounds.
-              color: theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
+              color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
             ),
           ),
 

@@ -51,7 +51,7 @@ class LandMarkDetailsScreen extends StatelessWidget {
 
       if (pickedFile != null) {
         final selectedImage = File(pickedFile.path);
-
+        if (!context.mounted) return;
         GoRouter.of(context).push(AppRouter.kCameraView, extra: selectedImage);
       }
     }
@@ -76,7 +76,7 @@ class LandMarkDetailsScreen extends StatelessWidget {
             bottomWidget: Text(
               "Discover amazing destinations".tr(),
               style: TextStyle(
-                color: textColor?.withOpacity(0.7),
+                color: textColor?.withValues(alpha: 0.7),
                 fontSize: 16.sp,
               ),
             ),
@@ -160,8 +160,8 @@ class LandMarkDetailsScreen extends StatelessWidget {
                       Text(
                         landMark.name,
                         style: TextStyle(
-                          color: theme.textTheme.bodyMedium?.color?.withOpacity(
-                            0.9,
+                          color: theme.textTheme.bodyMedium?.color?.withValues(
+                            alpha: 0.9,
                           ),
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
@@ -170,8 +170,8 @@ class LandMarkDetailsScreen extends StatelessWidget {
                       Text(
                         landMark.location,
                         style: TextStyle(
-                          color: theme.textTheme.bodyMedium?.color?.withOpacity(
-                            0.7,
+                          color: theme.textTheme.bodyMedium?.color?.withValues(
+                            alpha: 0.7,
                           ),
                           fontSize: 14.sp,
                         ),

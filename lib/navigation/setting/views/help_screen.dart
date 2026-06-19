@@ -39,7 +39,7 @@ class _HelpScreenState extends State<HelpScreen> {
     final theme    = Theme.of(context);
     final textColor = theme.textTheme.bodyLarge?.color  ?? Colors.black87;
     final subColor  = (theme.textTheme.bodyMedium?.color ?? Colors.black54)
-        .withOpacity(0.7);
+        .withValues(alpha: 0.7);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -88,14 +88,14 @@ class _HelpScreenState extends State<HelpScreen> {
                   Text(
                     'help_contact_email'.tr(),
                     style: TextStyle(
-                        color: Colors.white.withOpacity(0.85),
+                        color: Colors.white.withValues(alpha: 0.85),
                         fontSize: 14.sp),
                   ),
                   SizedBox(height: 2.h),
                   Text(
                     'help_contact_hours'.tr(),
                     style: TextStyle(
-                        color: Colors.white.withOpacity(0.7),
+                        color: Colors.white.withValues(alpha: 0.7),
                         fontSize: 12.sp),
                   ),
                 ],

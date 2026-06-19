@@ -65,6 +65,7 @@ class _ResetScreenState extends State<ResetScreen> {
         newPassword: password,
       );
       _showMessage('Password has been reset successfully');
+      if (!mounted) return;
       GoRouter.of(context).push(AppRouter.kLoginView);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'expired-action-code' || e.code == 'invalid-action-code') {
@@ -79,6 +80,7 @@ class _ResetScreenState extends State<ResetScreen> {
         _loading = false;
       });
     }
+    if (!mounted) return;
     GoRouter.of(context).go(AppRouter.kLoginView);
   }
 

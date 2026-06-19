@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:travel_hub/core/utils/app_router.dart';
 import 'package:travel_hub/constant.dart';
+import 'package:travel_hub/core/utils/currency_formatter.dart';
 import 'package:travel_hub/navigation/favorites/hotels_favorites/data/cubit/hotels_favorites_cubit.dart';
 import 'package:travel_hub/navigation/favorites/hotels_favorites/data/cubit/hotels_favorites_state.dart';
 import 'package:travel_hub/navigation/hotels/data/cubit/hotels_cubit.dart';
@@ -99,7 +100,7 @@ class HotelCard extends StatelessWidget {
                 children: [
                   HotelInfoRow(
                     leftText: hotel.name,
-                    rightText: "${hotel.pricePerNight} ${"EGP".tr()}",
+                    rightText: CurrencyFormatter.format(hotel.pricePerNight),
                     leftColor: theme.textTheme.bodyMedium?.color ?? kBlack,
                     rightColor: theme.colorScheme.primary,
                   ),
@@ -107,13 +108,16 @@ class HotelCard extends StatelessWidget {
                   HotelInfoRow(
                     leftText: hotel.city,
                     rightText: "per night".tr(),
-                    leftColor: theme.textTheme.bodyMedium?.color?.withOpacity(0.7) ?? kAssets,
-                    rightColor: theme.textTheme.bodyMedium?.color?.withOpacity(0.7) ?? kAssets,
+                    leftColor: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7) ?? kAssets,
+                    rightColor: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7) ?? kAssets,
                   ),
                   SizedBox(height: 10.h),
                   CustomButton(
                     buttonText: "Book Now".tr(),
-                    onPressed: () => GoRouter.of(context).push(AppRouter.kBookView),
+                    onPressed: () => GoRouter.of(context).push(
+                      AppRouter.kBookView,
+                      extra: hotel,
+                    ),
                   ),
                 ],
               ),
@@ -147,12 +151,29 @@ class _HotelImage extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
           child: CachedNetworkImage(
-            
             height: 180.h,
             width: double.infinity,
-            fit: BoxFit.cover, imageUrl: imageUrl,
-            placeholder: (context, url) => CircularProgressIndicator(),
-        errorWidget: (context, url, error) => Icon(Icons.error),
+            fit: BoxFit.cover,
+            imageUrl: imageUrl,
+            placeholder: (context, url) => Container(
+              height: 180.h,
+              width: double.infinity,
+              color: Colors.grey[200],
+              child: const Center(child: CircularProgressIndicator()),
+            ),
+            errorWidget: (context, url, error) => Container(
+              height: 180.h,
+              width: double.infinity,
+              color: Colors.grey[200],
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.broken_image_outlined, size: 40, color: Colors.grey[500]),
+                  const SizedBox(height: 8),
+                  Text('Image unavailable', style: TextStyle(color: Colors.grey[500], fontSize: 12)),
+                ],
+              ),
+            ),
           ),
         ),
         Container(
