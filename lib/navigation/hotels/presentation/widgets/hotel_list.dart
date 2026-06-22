@@ -9,40 +9,72 @@ import 'package:travel_hub/constant.dart';
 import 'package:travel_hub/core/utils/currency_formatter.dart';
 import 'package:travel_hub/navigation/favorites/hotels_favorites/data/cubit/hotels_favorites_cubit.dart';
 import 'package:travel_hub/navigation/favorites/hotels_favorites/data/cubit/hotels_favorites_state.dart';
-import 'package:travel_hub/navigation/hotels/data/cubit/hotels_cubit.dart';
-import 'package:travel_hub/navigation/hotels/data/cubit/hotels_state.dart';
 import 'package:travel_hub/navigation/hotels/models/hotels_model.dart';
 import 'custom_button.dart';
 
+/// Displays a list of already-filtered [hotels].
+///
+/// [canLoadMore] shows a "See more" button when there are more unfiltered
+/// results to paginate into.  [isEmpty] triggers the friendly empty-state
+/// widget instead of an empty list.
 class HotelsList extends StatelessWidget {
-  final HotelsSuccess state;
+  final List<Hotels> hotels;
+  final bool canLoadMore;
+  final VoidCallback onLoadMore;
+  final bool isEmpty;
 
-  const HotelsList({super.key, required this.state});
+  const HotelsList({
+    super.key,
+    required this.hotels,
+    required this.canLoadMore,
+    required this.onLoadMore,
+    required this.isEmpty,
+  });
 
   @override
   Widget build(BuildContext context) {
+    if (isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.search_off_rounded, size: 60.sp, color: kAssets),
+            SizedBox(height: 12.h),
+            Text(
+              'hotel_no_results'.tr(),
+              style: TextStyle(
+                color: kAssets,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+
     return SingleChildScrollView(
       child: Column(
         children: [
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: state.numHotels,
+            itemCount: hotels.length,
             itemBuilder: (context, index) {
-              final hotel = state.hotels[index];
-              return HotelCard(hotel: hotel);
+              return HotelCard(hotel: hotels[index]);
             },
           ),
-
-          TextButton(
-            onPressed: () {
-              context.read<HotelsCubit>().loadMoreHotels();
-            },
-            child: Text(
-              "See more".tr(),
-              style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          if (canLoadMore)
+            TextButton(
+              onPressed: onLoadMore,
+              child: Text(
+                'See more'.tr(),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
             ),
-          ),
           SizedBox(height: 15.h),
         ],
       ),

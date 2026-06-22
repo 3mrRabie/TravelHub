@@ -202,5 +202,21 @@
   "Check-out must be after check-in": "يجب أن يكون تاريخ المغادرة بعد تاريخ الوصول",
   "Invalid date range": "نطاق التاريخ غير صالح",
   "Please sign in to book": "يرجى تسجيل الدخول للحجز",
-  "Booking failed": "فشل الحجز"
+  "Booking failed": "فشل الحجز",
+  "hotel_search_hint": "ابحث عن فندق باسمه...",
+  "hotel_filters": "الفلاتر",
+  "hotel_filter_clear": "مسح",
+  "hotel_all_ratings": "الكل",
+  "hotel_5_stars": "5 نجوم",
+  "hotel_4_stars": "4 نجوم",
+  "hotel_3_stars": "3 نجوم",
+  "hotel_price_range": "نطاق السعر",
+  "hotel_no_results": "لا توجد فنادق تطابق بحثك",
+  "All Cities": "جميع المدن",
+  "Cairo": "القاهرة",
+  "Alexandria": "الإسكندرية",
+  "Sharm El Sheikh": "شرم الشيخ",
+  "Hurghada": "الغردقة",
+  "Luxor": "الأقصر",
+  "Aswan": "أسوان"
 }

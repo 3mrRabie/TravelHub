@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:travel_hub/core/utils/app_router.dart';
 import 'package:travel_hub/navigation/hotels/data/cubit/hotels_cubit.dart';
 import 'package:travel_hub/navigation/hotels/data/cubit/hotels_state.dart';
+import 'package:travel_hub/navigation/hotels/models/hotels_model.dart';
+import 'package:travel_hub/navigation/hotels/presentation/widgets/hotel_filters_section.dart';
 import 'package:travel_hub/navigation/hotels/presentation/widgets/hotel_list.dart';
 
 class HotelsScreen extends StatefulWidget {
@@ -20,6 +22,29 @@ class _HotelsScreenState extends State<HotelsScreen> {
   // user switches locale without having to navigate away and back.
   String? _loadedLang;
 
+  // ── Filter state ──────────────────────────────────────────────────────────
+
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  /// Stored as an English city key (e.g. 'Cairo', 'All Cities').
+  /// Using English keys means the selection survives locale changes and the
+  /// translated city name used for comparison always matches the loaded data.
+  String _selectedCityKey = 'All Cities';
+
+  /// null = all ratings; 3 / 4 / 5 = exact star category.
+  int? _selectedStars;
+
+  RangeValues _priceRange = const RangeValues(0, kHotelMaxPrice);
+
+  // ── Lifecycle ─────────────────────────────────────────────────────────────
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -29,6 +54,57 @@ class _HotelsScreenState extends State<HotelsScreen> {
       context.read<HotelsCubit>().loadHotels(lang);
     }
   }
+
+  // ── Filter helpers ────────────────────────────────────────────────────────
+
+  bool get _hasActiveFilters =>
+      _searchQuery.isNotEmpty ||
+      _selectedCityKey != 'All Cities' ||
+      _selectedStars != null ||
+      _priceRange.start > 0 ||
+      _priceRange.end < kHotelMaxPrice;
+
+  List<Hotels> _applyFilters(List<Hotels> hotels) {
+    // The city to compare against the hotel data (already in the current
+    // locale, because the JSON is locale-specific).  'All Cities' means no
+    // city restriction.
+    final cityFilter =
+        _selectedCityKey == 'All Cities' ? null : _selectedCityKey.tr();
+
+    return hotels.where((hotel) {
+      // ── Name search ──────────────────────────────────────────────────────
+      if (_searchQuery.isNotEmpty &&
+          !hotel.name.toLowerCase().contains(_searchQuery.toLowerCase())) {
+        return false;
+      }
+      // ── City ─────────────────────────────────────────────────────────────
+      if (cityFilter != null && hotel.city != cityFilter) {
+        return false;
+      }
+      // ── Star rating (exact category) ────────────────────────────────
+      if (_selectedStars != null && hotel.stars != _selectedStars!) {
+        return false;
+      }
+      // ── Price range ───────────────────────────────────────────────────────
+      if (hotel.pricePerNight < _priceRange.start ||
+          hotel.pricePerNight > _priceRange.end) {
+        return false;
+      }
+      return true;
+    }).toList();
+  }
+
+  void _clearFilters() {
+    setState(() {
+      _searchQuery = '';
+      _searchController.clear();
+      _selectedCityKey = 'All Cities';
+      _selectedStars = null;
+      _priceRange = const RangeValues(0, kHotelMaxPrice);
+    });
+  }
+
+  // ── Build ─────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +121,18 @@ class _HotelsScreenState extends State<HotelsScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Hotels".tr(),
-                style: TextStyle(color: theme.textTheme.bodyLarge?.color, fontSize: 24.sp),
+                'Hotels'.tr(),
+                style: TextStyle(
+                  color: theme.textTheme.bodyLarge?.color,
+                  fontSize: 24.sp,
+                ),
               ),
               Text(
-                "Find your perfect stay".tr(),
-                style: TextStyle(color: theme.textTheme.bodyMedium?.color, fontSize: 16.sp),
+                'Find your perfect stay'.tr(),
+                style: TextStyle(
+                  color: theme.textTheme.bodyMedium?.color,
+                  fontSize: 16.sp,
+                ),
               ),
             ],
           ),
@@ -58,9 +140,12 @@ class _HotelsScreenState extends State<HotelsScreen> {
         actions: [
           Column(
             children: [
-              IconButton(icon: const Icon(Icons.favorite), onPressed: () {
-                GoRouter.of(context).push(AppRouter.kHotelsFavoritesView);
-              }),
+              IconButton(
+                icon: const Icon(Icons.favorite),
+                onPressed: () {
+                  GoRouter.of(context).push(AppRouter.kHotelsFavoritesView);
+                },
+              ),
             ],
           ),
         ],
@@ -79,7 +164,50 @@ class _HotelsScreenState extends State<HotelsScreen> {
                 ),
               );
             } else if (state is HotelsSuccess) {
-              return HotelsList(state: state);
+              final filtered = _applyFilters(state.hotels);
+
+              // When filters are active show all results (searching implies
+              // you want to see everything that matches, not just the first 10).
+              // Otherwise respect the pagination cursor.
+              final displayed = _hasActiveFilters
+                  ? filtered
+                  : filtered.take(state.numHotels).toList();
+
+              final canLoadMore = !_hasActiveFilters &&
+                  state.numHotels < state.hotels.length;
+
+              return Column(
+                children: [
+                  // ── Filter section ─────────────────────────────────────
+                  HotelFiltersSection(
+                    searchController: _searchController,
+                    selectedCityKey: _selectedCityKey,
+                    selectedStars: _selectedStars,
+                    priceRange: _priceRange,
+                    hasActiveFilters: _hasActiveFilters,
+                    onSearchChanged: (q) => setState(() => _searchQuery = q),
+                    onCityChanged: (key) =>
+                        setState(() => _selectedCityKey = key),
+                    onRatingChanged: (r) =>
+                        setState(() => _selectedStars = r),
+                    onPriceRangeChanged: (r) =>
+                        setState(() => _priceRange = r),
+                    onClearFilters: _clearFilters,
+                  ),
+                  SizedBox(height: 4.h),
+
+                  // ── Hotel list ─────────────────────────────────────────
+                  Expanded(
+                    child: HotelsList(
+                      hotels: displayed,
+                      canLoadMore: canLoadMore,
+                      onLoadMore: () =>
+                          context.read<HotelsCubit>().loadMoreHotels(),
+                      isEmpty: filtered.isEmpty,
+                    ),
+                  ),
+                ],
+              );
             } else {
               return const SizedBox();
             }

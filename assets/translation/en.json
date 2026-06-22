@@ -202,5 +202,21 @@
   "Check-out must be after check-in": "Check-out must be after check-in",
   "Invalid date range": "Invalid date range",
   "Please sign in to book": "Please sign in to book",
-  "Booking failed": "Booking failed"
+  "Booking failed": "Booking failed",
+  "hotel_search_hint": "Search hotels by name...",
+  "hotel_filters": "Filters",
+  "hotel_filter_clear": "Clear",
+  "hotel_all_ratings": "All",
+  "hotel_5_stars": "5 Stars",
+  "hotel_4_stars": "4 Stars",
+  "hotel_3_stars": "3 Stars",
+  "hotel_price_range": "Price Range",
+  "hotel_no_results": "No hotels match your search",
+  "All Cities": "All Cities",
+  "Cairo": "Cairo",
+  "Alexandria": "Alexandria",
+  "Sharm El Sheikh": "Sharm El Sheikh",
+  "Hurghada": "Hurghada",
+  "Luxor": "Luxor",
+  "Aswan": "Aswan"
 }
